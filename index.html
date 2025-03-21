@@ -33,6 +33,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
         }
         .middle {
             flex: 1.2;
@@ -50,24 +51,29 @@
             justify-content: center;
             padding: 10px;
         }
-        iframe {
+        table {
             width: 100%;
-            height: 100%;
-            border: none;
+            border-collapse: collapse;
+            text-align: center;
+            background: white;
+            color: black;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid black;
+        }
+        th {
+            background: #e94560;
+            color: white;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Sección de Vuelos -->
+        <!-- Sección de Vuelos (Ahora con JavaScript) -->
         <div class="top">
-       <iframe id="vuelosFrame" 
-    src="https://api.allorigins.win/raw?url=http://salidas.dgac.gob.gt/vuelos/pantallas/salidas.php"
-    scrolling="no" frameborder="0">
-</iframe>
-
-</iframe>
-
+            <h2>Información en Tiempo Real de Vuelos</h2>
+            <div id="vuelosContainer">Cargando vuelos...</div>
         </div>
 
         <!-- Sección de Mapa -->
@@ -80,5 +86,33 @@
             <iframe src="https://www.meteoblue.com/en/weather/widget/three/guatemala?geoloc=fixed&nocurrent=0&noforecast=0&days=4&tempunit=C&windunit=Kmh&layout=image" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
         </div>
     </div>
+
+    <script>
+        async function obtenerVuelos() {
+            try {
+                let response = await fetch("https://api.allorigins.win/get?url=" + encodeURIComponent("http://salidas.dgac.gob.gt/vuelos/pantallas/salidas.php"));
+                let data = await response.json();
+                
+                // Convertir el HTML recibido en un documento manipulable
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(data.contents, "text/html");
+
+                // Extraer la tabla de vuelos
+                let tablaVuelos = doc.querySelector("table"); 
+                if (tablaVuelos) {
+                    document.getElementById("vuelosContainer").innerHTML = tablaVuelos.outerHTML;
+                } else {
+                    document.getElementById("vuelosContainer").innerHTML = "No se encontraron datos de vuelos.";
+                }
+            } catch (error) {
+                console.error("Error al obtener vuelos:", error);
+                document.getElementById("vuelosContainer").innerHTML = "Error al cargar los datos.";
+            }
+        }
+
+        // Llamar a la función al cargar la página y cada 30 segundos
+        obtenerVuelos();
+        setInterval(obtenerVuelos, 30000);
+    </script>
 </body>
 </html>
