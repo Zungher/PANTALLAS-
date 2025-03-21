@@ -6,7 +6,7 @@
     <title>Información de Vuelos y Clima</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
-        
+
         body {
             margin: 0;
             padding: 0;
@@ -36,7 +36,7 @@
             flex-direction: column;
         }
         .middle {
-            flex: 1.2;
+            flex: 2;
             background: #112d4e;
             display: flex;
             align-items: center;
@@ -44,7 +44,7 @@
             border-bottom: 5px solid #e94560;
         }
         .bottom {
-            flex: 2;
+            flex: 2.5;
             background: linear-gradient(to bottom, #16213e, #0f3460);
             display: flex;
             align-items: center;
@@ -57,20 +57,40 @@
             text-align: center;
             background: white;
             color: black;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
         }
         th, td {
-            padding: 10px;
+            padding: 12px;
             border: 1px solid black;
         }
         th {
             background: #e94560;
             color: white;
+            font-size: 18px;
+        }
+        td {
+            font-size: 16px;
+        }
+        tr:hover {
+            background: #f1f1f1;
+        }
+        .icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Sección de Vuelos (Ahora con JavaScript) -->
+        <!-- Sección de Vuelos -->
         <div class="top">
             <h2>Información en Tiempo Real de Vuelos</h2>
             <div id="vuelosContainer">Cargando vuelos...</div>
@@ -93,13 +113,25 @@
                 let response = await fetch("https://api.allorigins.win/get?url=" + encodeURIComponent("http://salidas.dgac.gob.gt/vuelos/pantallas/salidas.php"));
                 let data = await response.json();
                 
-                // Convertir el HTML recibido en un documento manipulable
                 let parser = new DOMParser();
                 let doc = parser.parseFromString(data.contents, "text/html");
 
-                // Extraer la tabla de vuelos
-                let tablaVuelos = doc.querySelector("table"); 
+                let tablaVuelos = doc.querySelector("table");
                 if (tablaVuelos) {
+                    // Agregar iconos y mejorar el diseño
+                    let filas = tablaVuelos.querySelectorAll("tr");
+                    filas.forEach((fila, index) => {
+                        if (index !== 0) {
+                            let celdaVuelo = fila.children[2];
+                            if (celdaVuelo) {
+                                let icono = document.createElement("img");
+                                icono.src = "https://cdn-icons-png.flaticon.com/512/1531/1531060.png"; // Icono de avión
+                                icono.classList.add("icon");
+                                celdaVuelo.prepend(icono);
+                            }
+                        }
+                    });
+
                     document.getElementById("vuelosContainer").innerHTML = tablaVuelos.outerHTML;
                 } else {
                     document.getElementById("vuelosContainer").innerHTML = "No se encontraron datos de vuelos.";
@@ -110,7 +142,6 @@
             }
         }
 
-        // Llamar a la función al cargar la página y cada 30 segundos
         obtenerVuelos();
         setInterval(obtenerVuelos, 30000);
     </script>
