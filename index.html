@@ -26,7 +26,7 @@
             overflow: hidden;
         }
         .top {
-            flex: 2.8;
+            flex: 3;
             background-color: #0f3460;
             padding: 10px;
             border-bottom: 5px solid #e94560;
@@ -35,7 +35,7 @@
             justify-content: center;
         }
         .middle {
-            flex: 1.5;
+            flex: 1.2;
             background: #112d4e;
             display: flex;
             align-items: center;
@@ -43,7 +43,7 @@
             border-bottom: 5px solid #e94560;
         }
         .bottom {
-            flex: 2.2;
+            flex: 2;
             background: linear-gradient(to bottom, #16213e, #0f3460);
             display: flex;
             align-items: center;
@@ -56,35 +56,20 @@
             border: none;
         }
     </style>
-    <script>
-        // Cargar datos de vuelos desde el PHP
-        function cargarVuelos() {
-            fetch('vuelos.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('vuelos').innerHTML = data;
-                })
-                .catch(error => {
-                    document.getElementById('vuelos').innerHTML = "<p style='color: red;'>Error al cargar vuelos.</p>";
-                });
-        }
-
-        window.onload = cargarVuelos;
-    </script>
 </head>
 <body>
     <div class="container">
-        <!-- Sección de vuelos -->
-        <div class="top" id="vuelos">
-            <p>Cargando vuelos...</p>
+        <!-- Sección de Vuelos (Usando iframe en lugar de fetch) -->
+        <div class="top">
+            <iframe src="http://salidas.dgac.gob.gt/vuelos/pantallas/salidas.php" scrolling="no" frameborder="0"></iframe>
         </div>
-        
-        <!-- Sección del mapa -->
+
+        <!-- Sección de Mapa -->
         <div class="middle">
             <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-90.5250%2C14.5900%2C-90.5000%2C14.6050&layer=mapnik&marker=14.596977,-90.518358&line=-90.51913,14.59654;-90.52497,14.58249" scrolling="no" frameborder="0" allowfullscreen></iframe>
         </div>
-        
-        <!-- Sección del clima -->
+
+        <!-- Sección de Clima -->
         <div class="bottom">
             <iframe src="https://www.meteoblue.com/en/weather/widget/three/guatemala?geoloc=fixed&nocurrent=0&noforecast=0&days=4&tempunit=C&windunit=Kmh&layout=image" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
         </div>
