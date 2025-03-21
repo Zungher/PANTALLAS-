@@ -5,7 +5,7 @@ header("Content-Type: text/html; charset=UTF-8");
 // URL del sitio de vuelos
 $url = "http://salidas.dgac.gob.gt/vuelos/pantallas/salidas.php";
 
-// Configura la solicitud HTTP
+// Configura la solicitud HTTP con un User-Agent para evitar bloqueos
 $options = array(
     "http" => array(
         "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\r\n"
