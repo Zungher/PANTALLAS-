@@ -56,35 +56,27 @@
             border: none;
         }
     </style>
+    <script>
+        // Cargar datos de vuelos desde el PHP
+        function cargarVuelos() {
+            fetch('vuelos.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('vuelos').innerHTML = data;
+                })
+                .catch(error => {
+                    document.getElementById('vuelos').innerHTML = "<p style='color: red;'>Error al cargar vuelos.</p>";
+                });
+        }
+
+        window.onload = cargarVuelos;
+    </script>
 </head>
 <body>
     <div class="container">
         <!-- Sección de vuelos -->
-        <div class="top">
-            <?php
-            // URL del sitio de vuelos
-            $url = "http://salidas.dgac.gob.gt/vuelos/pantallas/salidas.php";
-
-            // Configura la solicitud HTTP
-            $options = array(
-                "http" => array(
-                    "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\r\n"
-                )
-            );
-
-            // Crea el contexto de la solicitud
-            $context = stream_context_create($options);
-
-            // Obtiene el contenido de la página
-            $contenido = file_get_contents($url, false, $context);
-
-            // Verifica si se pudo obtener el contenido
-            if ($contenido === false) {
-                echo "<p style='color: red; font-weight: bold;'>Error al obtener los datos de vuelos.</p>";
-            } else {
-                echo $contenido;
-            }
-            ?>
+        <div class="top" id="vuelos">
+            <p>Cargando vuelos...</p>
         </div>
         
         <!-- Sección del mapa -->
