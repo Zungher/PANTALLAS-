@@ -14,7 +14,6 @@
             background-color: #1a1a2e;
             color: white;
             display: flex;
-            align-items: center;
             justify-content: center;
         }
         .container {
@@ -26,64 +25,60 @@
             overflow: hidden;
         }
         .top {
-            flex: 3;
-            background-color: #0f3460;
-            padding: 10px;
-            border-bottom: 5px solid #e94560;
+            flex: 2;
+            background: linear-gradient(to right, #e94560, #ff6f61);
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
         }
-        .middle {
-            flex: 2;
-            background: #112d4e;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-bottom: 5px solid #e94560;
-        }
-        .bottom {
-            flex: 2.5;
-            background: linear-gradient(to bottom, #16213e, #0f3460);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .table-container {
+            width: 95%;
+            background: white;
+            color: black;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
             padding: 10px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: center;
-            background: white;
-            color: black;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
         }
         th, td {
             padding: 12px;
-            border: 1px solid black;
+            border-bottom: 1px solid #ddd;
         }
         th {
             background: #e94560;
             color: white;
             font-size: 18px;
         }
-        td {
-            font-size: 16px;
+        tr:nth-child(even) {
+            background: #f9f9f9;
         }
         tr:hover {
             background: #f1f1f1;
         }
-        .icon {
-            width: 24px;
-            height: 24px;
-            vertical-align: middle;
+        .middle {
+            flex: 1.5;
+            background: #112d4e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bottom {
+            flex: 1.5;
+            background: linear-gradient(to bottom, #16213e, #0f3460);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         iframe {
-            width: 100%;
-            height: 100%;
+            width: 95%;
+            height: 90%;
             border: none;
         }
     </style>
@@ -92,18 +87,18 @@
     <div class="container">
         <!-- Sección de Vuelos -->
         <div class="top">
-            <h2>Información en Tiempo Real de Vuelos</h2>
-            <div id="vuelosContainer">Cargando vuelos...</div>
+            <h2>Departures from Guatemala City (GUA)</h2>
+            <div class="table-container" id="vuelosContainer">Cargando vuelos...</div>
         </div>
 
         <!-- Sección de Mapa -->
         <div class="middle">
-            <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-90.5250%2C14.5900%2C-90.5000%2C14.6050&layer=mapnik&marker=14.596977,-90.518358&line=-90.51913,14.59654;-90.52497,14.58249" scrolling="no" frameborder="0" allowfullscreen></iframe>
+            <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-90.5250%2C14.5900%2C-90.5000%2C14.6050&layer=mapnik&marker=14.596977,-90.518358&line=-90.51913,14.59654;-90.52497,14.58249" scrolling="no"></iframe>
         </div>
 
         <!-- Sección de Clima -->
         <div class="bottom">
-            <iframe src="https://www.meteoblue.com/en/weather/widget/three/guatemala?geoloc=fixed&nocurrent=0&noforecast=0&days=4&tempunit=C&windunit=Kmh&layout=image" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
+            <iframe src="https://www.meteoblue.com/en/weather/widget/three/guatemala?geoloc=fixed&nocurrent=0&noforecast=0&days=4&tempunit=C&windunit=Kmh&layout=image" scrolling="no"></iframe>
         </div>
     </div>
 
@@ -118,20 +113,6 @@
 
                 let tablaVuelos = doc.querySelector("table");
                 if (tablaVuelos) {
-                    // Agregar iconos y mejorar el diseño
-                    let filas = tablaVuelos.querySelectorAll("tr");
-                    filas.forEach((fila, index) => {
-                        if (index !== 0) {
-                            let celdaVuelo = fila.children[2];
-                            if (celdaVuelo) {
-                                let icono = document.createElement("img");
-                                icono.src = "https://cdn-icons-png.flaticon.com/512/1531/1531060.png"; // Icono de avión
-                                icono.classList.add("icon");
-                                celdaVuelo.prepend(icono);
-                            }
-                        }
-                    });
-
                     document.getElementById("vuelosContainer").innerHTML = tablaVuelos.outerHTML;
                 } else {
                     document.getElementById("vuelosContainer").innerHTML = "No se encontraron datos de vuelos.";
@@ -141,7 +122,7 @@
                 document.getElementById("vuelosContainer").innerHTML = "Error al cargar los datos.";
             }
         }
-
+        
         obtenerVuelos();
         setInterval(obtenerVuelos, 30000);
     </script>
