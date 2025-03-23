@@ -17,30 +17,21 @@
      flex-direction: column;
      height: 100vh;
      background-color: #000;
+     color: #fff;
    }
 
    .section {
-     border: 2px solid #000;
-     box-sizing: border-box;
-     overflow: hidden;
      display: flex;
      justify-content: center;
      align-items: center;
      padding: 0;
+     box-sizing: border-box;
+     overflow: hidden;
    }
 
-   .vuelos {
-     flex: 1;
-   }
-
-   .mapa {
-     flex: 1;
-     position: relative;
-   }
-
-   .clima {
-     flex: 1.2;
-   }
+   .vuelos { flex: 1; }
+   .mapa { flex: 1; position: relative; }
+   .clima { flex: 1.2; }
 
    iframe {
      width: 100%;
@@ -48,38 +39,33 @@
      border: none;
    }
 
-   /* Estilo para el mapa Leaflet */
    #map {
      width: 100%;
      height: 100%;
    }
 
-   /* ==================== Panel de Clima (Mejorado) ==================== */
    .weather-container {
      position: relative;
      width: 100%;
      height: 100%;
-     max-width: 100%;
-     max-height: 100%;
-     color: #fff;
      display: flex;
      flex-direction: column;
-     justify-content: space-between;
+     justify-content: center;
+     align-items: center;
      padding: 20px;
-     box-sizing: border-box;
+     background-color: #111;
      background-size: cover;
      background-position: center;
      background-repeat: no-repeat;
      transition: background-image 0.5s ease-in-out;
+     color: #fff;
    }
 
    .weather-container::before {
      content: "";
      position: absolute;
-     top: 0;
-     left: 0;
-     width: 100%;
-     height: 100%;
+     top: 0; left: 0;
+     width: 100%; height: 100%;
      background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
      z-index: 1;
    }
@@ -87,45 +73,50 @@
    .weather-main, .forecast {
      position: relative;
      z-index: 2;
-   }
-
-   .weather-main {
-     text-align: center;
-     flex: 1;
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     padding: 20px 0;
-   }
-
-   .city {
-     font-size: 3vw;
-     font-weight: bold;
-     margin-bottom: 10px;
+     width: 100%;
    }
 
    .temp {
+     text-align: center;
      font-size: 6vw;
-     margin: 10px 0;
+     margin-bottom: 20px;
      font-weight: 300;
    }
 
    .condition {
-     font-size: 2vw;
      display: flex;
-     justify-content: center;
      align-items: center;
-     gap: 10px;
-     margin-bottom: 10px;
+     justify-content: center;
+     gap: 15px;
+     font-size: 2.5vw;
+     font-weight: 500;
+     margin-bottom: 20px;
+   }
+
+   .weather-icon-img {
+     width: 60px;
+     height: 60px;
    }
 
    .details {
      display: flex;
      justify-content: center;
-     gap: 2vw;
+     gap: 3vw;
      margin-top: 20px;
      font-size: 1.5vw;
      flex-wrap: wrap;
+   }
+
+   .detail-item {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+   }
+
+   .detail-icon {
+     width: 32px;
+     height: 32px;
+     object-fit: contain;
    }
 
    .forecast {
@@ -155,6 +146,7 @@
    }
  </style>
 </head>
+
 <body>
 
  <!-- Sección 1: Vuelos -->
@@ -162,56 +154,69 @@
    <iframe src="https://vuelosrepo-git-main-zunghers-projects.vercel.app/"></iframe>
  </div>
 
- <!-- Sección 2: Mapa (Leaflet integrado) -->
+ <!-- Sección 2: Mapa Dinámico -->
  <div class="section mapa">
    <div id="map"></div>
  </div>
 
- <!-- Sección 3: Clima dinámico mejorado -->
+ <!-- Sección 3: Clima Dinámico Mejorado -->
  <div class="section clima">
    <div class="weather-container" id="weather-container">
+
      <div class="weather-main">
-       <div class="city" id="city">Guatemala</div>
+
        <div class="temp" id="current-temp">--°C</div>
+
        <div class="condition">
-         <div id="weather-icon">☁️</div>
+         <img id="weather-icon-img" src="" alt="icono clima" class="weather-icon-img">
          <div id="description">Cargando...</div>
        </div>
+
        <div class="details">
-         <div id="wind">💨 -- km/h</div>
-         <div id="humidity">💧 --%</div>
-         <div id="pressure">⏲️ -- hPa</div>
+         <div class="detail-item">
+           <img src="https://cdn-icons-png.flaticon.com/512/481/481069.png" alt="Viento" class="detail-icon">
+           <span id="wind">-- km/h</span>
+         </div>
+         <div class="detail-item">
+           <img src="https://cdn-icons-png.flaticon.com/512/728/728093.png" alt="Humedad" class="detail-icon">
+           <span id="humidity">--%</span>
+         </div>
+         <div class="detail-item">
+           <img src="https://cdn-icons-png.flaticon.com/512/4148/4148460.png" alt="Presión" class="detail-icon">
+           <span id="pressure">-- hPa</span>
+         </div>
        </div>
+
      </div>
 
      <div class="forecast" id="forecast-container">
-       <!-- Pronóstico de ejemplo -->
        <div class="forecast-hour">
          <div>08:00</div>
-         <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="cloudy">
+         <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="forecast">
          <div>6°C</div>
        </div>
        <div class="forecast-hour">
          <div>09:00</div>
-         <img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png" alt="rain">
+         <img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png" alt="forecast">
          <div>5°C</div>
        </div>
        <div class="forecast-hour">
          <div>10:00</div>
-         <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="cloudy">
+         <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="forecast">
          <div>5°C</div>
        </div>
        <div class="forecast-hour">
          <div>11:00</div>
-         <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="cloudy">
+         <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="forecast">
          <div>6°C</div>
        </div>
        <div class="forecast-hour">
          <div>12:00</div>
-         <img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png" alt="rain">
+         <img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png" alt="forecast">
          <div>7°C</div>
        </div>
      </div>
+
    </div>
  </div>
 
@@ -219,7 +224,7 @@
  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
  <script>
-   // ===================== Mapa Dinámico =======================
+   // ===================== MAPA DINÁMICO =======================
    const hotelLatLng = [14.6094, -90.5186];
    const aeropuertoLatLng = [14.5833, -90.5270];
 
@@ -242,45 +247,35 @@
 
    map.fitBounds(ruta.getBounds());
 
-   // ===================== Clima Dinámico =======================
+   // ===================== CLIMA DINÁMICO =======================
    async function cargarClima() {
      try {
        const res = await fetch('https://clima-git-main-zunghers-projects.vercel.app/');
        const data = await res.json();
 
-       document.getElementById('city').innerText = "Guatemala";
        document.getElementById('current-temp').innerText = data.temperatura || '--°C';
        document.getElementById('description').innerText = data.estado || 'Sin datos';
-       document.getElementById('wind').innerText = `💨 ${data.viento || '-- km/h'}`;
-       document.getElementById('humidity').innerText = `💧 80%`; // ejemplo
-       document.getElementById('pressure').innerText = `⏲️ 1012 hPa`; // ejemplo
+       document.getElementById('wind').innerText = `${data.viento || '--'} km/h`;
+       document.getElementById('humidity').innerText = `${data.humedad || '80'}%`;
+       document.getElementById('pressure').innerText = `${data.presion || '1012'} hPa`;
 
        const estado = (data.estado || '').toLowerCase();
-       let icono = '❓';
-       let bgImage = 'url("https://source.unsplash.com/1600x900/?weather")';
+       let iconoURL = 'https://cdn-icons-png.flaticon.com/512/414/414825.png'; // nublado por defecto
+       let bgImage = 'url("https://source.unsplash.com/1600x900/?cloudy")';
 
        if (estado.includes('despejado')) {
-         icono = '☀️';
-         bgImage = 'url("https://media.istockphoto.com/id/824800468/es/foto/sol-en-el-cielo-azul-con-nubes.jpg?s=612x612&w=0&k=20&c=BPbirFLTh2AQZjr16whsD42eBWzooLwRrtAUmG9b5PE=")';
-       } else if (estado.includes('nublado')) {
-         icono = '☁️';
-         bgImage = 'url("https://media.istockphoto.com/id/1156241578/es/foto/cielo-oscuro-con-nubes-de-tormenta.jpg?s=612x612&w=0&k=20&c=PoiLztm2QV1kwqELgLG0zBRIXnY4azJSW7q5CyjiPlo=")';
+         iconoURL = 'https://cdn-icons-png.flaticon.com/512/869/869869.png'; // sol
+         bgImage = 'url("https://source.unsplash.com/1600x900/?clear-sky")';
        } else if (estado.includes('lluvia')) {
-         icono = '🌧️';
-         bgImage = 'url("https://media.istockphoto.com/id/1429701799/es/foto/gotas-de-lluvia-sobre-asfalto-lluvia-clima-lluvioso-aguacero.jpg?s=612x612&w=0&k=20&c=BaUR7N142PKUmdV0vCdELtq-BFkaAdHceK5FbWm8PTQ=")';
-       } else if (estado.includes('chubasco')) {
-         icono = '🌦️';
-         bgImage = 'url("https://cdn0.ecologiaverde.com/es/posts/1/7/6/que_son_los_chubascos_4671_0_600.jpg")';
-       } else if (estado.includes('niebla')) {
-         icono = '🌫️';
-         bgImage = 'url("https://fotografias.larazon.es/clipping/cmsimages01/2023/12/02/C23C7773-C437-4B86-93D6-7A41E43D3BF2/que-niebla-cuales-son-sus-tipos_98.jpg?crop=1120,630,x41,y0&width=1900&height=1069&optimize=low&format=webply")';
+         iconoURL = 'https://cdn-icons-png.flaticon.com/512/1163/1163624.png'; // lluvia
+         bgImage = 'url("https://source.unsplash.com/1600x900/?rain")';
+       } else if (estado.includes('nublado')) {
+         iconoURL = 'https://cdn-icons-png.flaticon.com/512/414/414825.png'; // nublado
+         bgImage = 'url("https://source.unsplash.com/1600x900/?cloudy")';
        }
 
-       document.getElementById('weather-icon').innerText = icono;
-       const weatherContainer = document.getElementById('weather-container');
-       weatherContainer.style.backgroundImage = bgImage;
-       weatherContainer.style.backgroundSize = "cover";
-       weatherContainer.style.backgroundPosition = "center";
+       document.getElementById('weather-icon-img').src = iconoURL;
+       document.getElementById('weather-container').style.backgroundImage = bgImage;
 
      } catch (error) {
        console.error('Error al cargar el clima', error);
