@@ -276,7 +276,7 @@
          bgImage = 'url("https://fotografias.larazon.es/clipping/cmsimages01/2023/12/02/C23C7773-C437-4B86-93D6-7A41E43D3BF2/que-niebla-cuales-son-sus-tipos_98.jpg?crop=1120,630,x41,y0&width=1900&height=1069&optimize=low&format=webply")';
        }
 
-       document.getElementById('weather-icon').innerText = icono;
+       document.getElementById('weather-icon').innerHTML = icono;
        const weatherContainer = document.getElementById('weather-container');
        weatherContainer.style.backgroundImage = bgImage;
        weatherContainer.style.backgroundSize = "cover";
