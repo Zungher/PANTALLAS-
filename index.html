@@ -251,28 +251,28 @@
        document.getElementById('city').innerText = "Guatemala";
        document.getElementById('current-temp').innerText = data.temperatura || '--°C';
        document.getElementById('description').innerText = data.estado || 'Sin datos';
-       document.getElementById('wind').innerText = 💨 ${data.viento || '-- km/h'};
-       document.getElementById('humidity').innerText = 💧 80%; // ejemplo
-       document.getElementById('pressure').innerText = ⏲️ 1012 hPa; // ejemplo
+       document.getElementById('wind').innerText = `💨 ${data.viento || '-- km/h'}`;
+       document.getElementById('humidity').innerText = `💧 80%`; // ejemplo
+       document.getElementById('pressure').innerText = `⏲️ 1012 hPa`; // ejemplo
 
        const estado = (data.estado || '').toLowerCase();
        let icono = '❓';
        let bgImage = 'url("https://source.unsplash.com/1600x900/?weather")';
 
        if (estado.includes('despejado')) {
-         icono = '<a href="https://www.flaticon.es/icono-animado-gratis/sol_11200542?term=soleado&page=1&position=8&origin=search&related_id=11200542" alt="Despejado"></a>';
+         icono = '☀️';
          bgImage = 'url("https://media.istockphoto.com/id/824800468/es/foto/sol-en-el-cielo-azul-con-nubes.jpg?s=612x612&w=0&k=20&c=BPbirFLTh2AQZjr16whsD42eBWzooLwRrtAUmG9b5PE=")';
        } else if (estado.includes('nublado')) {
-         icono = '<a href="https://www.flaticon.es/icono-animado-gratis/nubes_17102874?term=nube&page=1&position=69&origin=search&related_id=17102874" alt="Nublado"></a>';
+         icono = '☁️';
          bgImage = 'url("https://media.istockphoto.com/id/1156241578/es/foto/cielo-oscuro-con-nubes-de-tormenta.jpg?s=612x612&w=0&k=20&c=PoiLztm2QV1kwqELgLG0zBRIXnY4azJSW7q5CyjiPlo=")';
        } else if (estado.includes('lluvia')) {
-         icono = '<a href="https://www.flaticon.es/icono-animado-gratis/clima_14822191?term=nube&page=1&position=3&origin=search&related_id=14822191" alt="Lluvia"></a>';
+         icono = '🌧️';
          bgImage = 'url("https://media.istockphoto.com/id/1429701799/es/foto/gotas-de-lluvia-sobre-asfalto-lluvia-clima-lluvioso-aguacero.jpg?s=612x612&w=0&k=20&c=BaUR7N142PKUmdV0vCdELtq-BFkaAdHceK5FbWm8PTQ=")';
        } else if (estado.includes('chubasco')) {
-         icono = '<a href="https://www.flaticon.es/icono-animado-gratis/lluvia_12086800?term=nube&page=1&position=7&origin=search&related_id=12086800" alt="Chubasco"></a>';
+         icono = '🌦️';
          bgImage = 'url("https://cdn0.ecologiaverde.com/es/posts/1/7/6/que_son_los_chubascos_4671_0_600.jpg")';
        } else if (estado.includes('niebla')) {
-          icono = '<a href="https://www.flaticon.es/icono-animado-gratis/neblinoso_17102868?term=niebla&page=1&position=2&origin=search&related_id=17102868" alt="Niebla"></a>';
+         icono = '🌫️';
          bgImage = 'url("https://fotografias.larazon.es/clipping/cmsimages01/2023/12/02/C23C7773-C437-4B86-93D6-7A41E43D3BF2/que-niebla-cuales-son-sus-tipos_98.jpg?crop=1120,630,x41,y0&width=1900&height=1069&optimize=low&format=webply")';
        }
 
