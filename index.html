@@ -253,7 +253,7 @@
 
        const estado = (data.estado || '').toLowerCase();
        let icono = '❓';
-       let bgImage = 'url("https://aprende.guatemala.com/wp-content/uploads/2020/06/climas-en-guatemala.jpg")'; // Imagen por defecto
+       let bgImage = 'url("https://source.unsplash.com/1600x900/?weather")';
 
        if (estado.includes('despejado')) {
          icono = '☀️';
@@ -264,24 +264,31 @@
        } else if (estado.includes('lluvia')) {
          icono = '🌧️';
          bgImage = 'url("https://media.istockphoto.com/id/1429701799/es/foto/gotas-de-lluvia-sobre-asfalto-lluvia-clima-lluvioso-aguacero.jpg")';
-       } else if (estado.includes('chubasco')) {
-         icono = '🌦️';
-         bgImage = 'url("https://cdn0.ecologiaverde.com/es/posts/1/7/6/que_son_los_chubascos_4671_0_600.jpg")';
+       } else if (estado.includes('tormenta')) {
+         icono = '⛈️';
+         bgImage = 'url("https://images.unsplash.com/photo-1501594907352-04cda38ebc29")';
        } else if (estado.includes('niebla')) {
          icono = '🌫️';
-         bgImage = 'url("https://fotografias.larazon.es/clipping/cmsimages01/2023/12/02/C23C7773-C437-4B86-93D6-7A41E43D3BF2/que-niebla-cuales-son-sus-tipos_98.jpg")';
+         bgImage = 'url("https://images.unsplash.com/photo-1546529549-4406a33e1bc8")';
        }
 
        document.getElementById('weather-icon').innerText = icono;
+
        const weatherContainer = document.getElementById('weather-container');
        weatherContainer.style.backgroundImage = bgImage;
+       weatherContainer.style.backgroundSize = "cover";
+       weatherContainer.style.backgroundPosition = "center";
+       weatherContainer.style.backgroundRepeat = "no-repeat";
 
      } catch (error) {
        console.error('Error al cargar el clima', error);
+       document.getElementById('description').innerText = 'Sin conexión';
      }
    }
 
+   // Ejecutar y refrescar cada 10 minutos
    cargarClima();
+   setInterval(cargarClima, 600000);
  </script>
 
 </body>
