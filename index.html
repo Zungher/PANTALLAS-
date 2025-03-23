@@ -24,10 +24,9 @@
      box-sizing: border-box;
      overflow: hidden;
      display: flex;
-     flex-direction: column;
+     justify-content: center;
+     align-items: center;
      padding: 0;
-     height: 100%;
-     width: 100%;
    }
 
    .vuelos {
@@ -53,78 +52,106 @@
      height: 100%;
    }
 
-   /* Estilo del clima */
+   /* ==================== Panel de Clima (Mejorado) ==================== */
    .weather-container {
+     position: relative;
      width: 100%;
      height: 100%;
-     background-color: #607d8b;
      color: #fff;
      display: flex;
      flex-direction: column;
      justify-content: space-between;
-     align-items: center;
+     padding: 20px;
      box-sizing: border-box;
-     padding: 2vh;
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     transition: background-image 0.5s ease-in-out;
+   }
+
+   .weather-container::before {
+     content: "";
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
+     z-index: 1;
+   }
+
+   .weather-main, .forecast {
+     position: relative;
+     z-index: 2;
    }
 
    .weather-main {
      text-align: center;
-     flex-grow: 1;
+     flex: 1;
      display: flex;
      flex-direction: column;
      justify-content: center;
+     padding: 20px 0;
    }
 
    .city {
-     font-size: 3.5vh;
+     font-size: 3vw;
      font-weight: bold;
+     margin-bottom: 10px;
    }
 
    .temp {
-     font-size: 8vh;
-     margin: 2vh 0;
+     font-size: 6vw;
+     margin: 10px 0;
+     font-weight: 300;
    }
 
    .condition {
-     font-size: 3vh;
+     font-size: 2vw;
      display: flex;
      justify-content: center;
      align-items: center;
-     gap: 1vh;
+     gap: 10px;
+     margin-bottom: 10px;
    }
 
    .details {
      display: flex;
      justify-content: center;
-     gap: 4vw;
-     margin-top: 2vh;
-     font-size: 2vh;
+     gap: 2vw;
+     margin-top: 20px;
+     font-size: 1.5vw;
+     flex-wrap: wrap;
    }
 
    .forecast {
-     width: 100%;
-     background-color: rgba(0,0,0,0.2);
-     padding: 1vh;
+     background-color: rgba(0,0,0,0.3);
+     backdrop-filter: blur(5px);
+     padding: 10px;
+     border-radius: 8px;
      display: flex;
      justify-content: space-around;
      flex-wrap: wrap;
-     box-sizing: border-box;
+     margin-top: 20px;
    }
 
    .forecast-hour {
      text-align: center;
      flex: 1;
      min-width: 80px;
-     font-size: 1.8vh;
+     font-size: 1.2vw;
      color: #fff;
+     margin: 5px;
    }
 
    .forecast-hour img {
      width: 48px;
      height: 48px;
+     margin: 8px 0;
    }
  </style>
 </head>
+
 <body>
 
  <!-- Sección 1: Vuelos -->
@@ -137,7 +164,7 @@
    <div id="map"></div>
  </div>
 
- <!-- Sección 3: Clima dinámico mejorado -->
+ <!-- Sección 3: Clima dinámico con imagen de fondo -->
  <div class="section clima">
    <div class="weather-container" id="weather-container">
      <div class="weather-main">
@@ -211,7 +238,7 @@
 
    map.fitBounds(ruta.getBounds());
 
-   // Clima dinámico
+   // Clima dinámico con fondo de imagen
    async function cargarClima() {
      try {
        const res = await fetch('https://clima-git-main-zunghers-projects.vercel.app/');
@@ -226,21 +253,28 @@
 
        const estado = (data.estado || '').toLowerCase();
        let icono = '❓';
-       let bgColor = '#607d8b';
+       let bgImage = 'url("https://source.unsplash.com/1600x900/?weather")'; // Imagen por defecto
 
        if (estado.includes('despejado')) {
          icono = '☀️';
-         bgColor = '#fbc02d';
+         bgImage = 'url("https://media.istockphoto.com/id/824800468/es/foto/sol-en-el-cielo-azul-con-nubes.jpg")';
        } else if (estado.includes('nublado')) {
          icono = '☁️';
-         bgColor = '#90a4ae';
+         bgImage = 'url("https://media.istockphoto.com/id/1156241578/es/foto/cielo-oscuro-con-nubes-de-tormenta.jpg")';
        } else if (estado.includes('lluvia')) {
          icono = '🌧️';
-         bgColor = '#546e7a';
+         bgImage = 'url("https://media.istockphoto.com/id/1429701799/es/foto/gotas-de-lluvia-sobre-asfalto-lluvia-clima-lluvioso-aguacero.jpg")';
+       } else if (estado.includes('chubasco')) {
+         icono = '🌦️';
+         bgImage = 'url("https://cdn0.ecologiaverde.com/es/posts/1/7/6/que_son_los_chubascos_4671_0_600.jpg")';
+       } else if (estado.includes('niebla')) {
+         icono = '🌫️';
+         bgImage = 'url("https://fotografias.larazon.es/clipping/cmsimages01/2023/12/02/C23C7773-C437-4B86-93D6-7A41E43D3BF2/que-niebla-cuales-son-sus-tipos_98.jpg")';
        }
 
        document.getElementById('weather-icon').innerText = icono;
-       document.getElementById('weather-container').style.backgroundColor = bgColor;
+       const weatherContainer = document.getElementById('weather-container');
+       weatherContainer.style.backgroundImage = bgImage;
 
      } catch (error) {
        console.error('Error al cargar el clima', error);
