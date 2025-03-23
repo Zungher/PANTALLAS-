@@ -260,18 +260,24 @@
        document.getElementById('pressure').innerText = `${data.presion || '1012'} hPa`;
 
        const estado = (data.estado || '').toLowerCase();
-       let iconoURL = 'https://cdn-icons-png.flaticon.com/512/414/414825.png'; // nublado por defecto
+       let iconoURL = 'https://cdn-icons-png.flaticon.com/512/414/414825.png'; // Nublado por defecto
        let bgImage = 'url("https://source.unsplash.com/1600x900/?cloudy")';
 
        if (estado.includes('despejado')) {
-         iconoURL = 'https://cdn-icons-png.flaticon.com/512/869/869869.png'; // sol
-         bgImage = 'url("https://source.unsplash.com/1600x900/?clear-sky")';
-       } else if (estado.includes('lluvia')) {
-         iconoURL = 'https://cdn-icons-png.flaticon.com/512/1163/1163624.png'; // lluvia
-         bgImage = 'url("https://source.unsplash.com/1600x900/?rain")';
+         iconoURL = 'https://cdn-icons-png.flaticon.com/512/869/869869.png'; // Sol
+         bgImage = 'url("https://media.istockphoto.com/id/824800468/es/foto/sol-en-el-cielo-azul-con-nubes.jpg")';
        } else if (estado.includes('nublado')) {
-         iconoURL = 'https://cdn-icons-png.flaticon.com/512/414/414825.png'; // nublado
-         bgImage = 'url("https://source.unsplash.com/1600x900/?cloudy")';
+         iconoURL = 'https://cdn-icons-png.flaticon.com/512/414/414825.png'; // Nublado
+         bgImage = 'url("https://media.istockphoto.com/id/1156241578/es/foto/cielo-oscuro-con-nubes-de-tormenta.jpg")';
+       } else if (estado.includes('lluvia')) {
+         iconoURL = 'https://cdn-icons-png.flaticon.com/512/1163/1163624.png'; // Lluvia
+         bgImage = 'url("https://media.istockphoto.com/id/1429701799/es/foto/gotas-de-lluvia-sobre-asfalto.jpg")';
+       } else if (estado.includes('chubasco')) {
+         iconoURL = 'https://cdn-icons-png.flaticon.com/512/1208/1208750.png'; // Chubasco
+         bgImage = 'url("https://cdn0.ecologiaverde.com/es/posts/1/7/6/que_son_los_chubascos_4671_0_600.jpg")';
+       } else if (estado.includes('niebla')) {
+         iconoURL = 'https://cdn-icons-png.flaticon.com/512/1779/1779807.png'; // Niebla
+         bgImage = 'url("https://fotografias.larazon.es/clipping/cmsimages01/2023/12/02/C23C7773-C437-4B86-93D6-7A41E43D3BF2/que-niebla-cuales-son-sus-tipos_98.jpg?crop=1120,630,x41,y0&width=1900&height=1069&optimize=low&format=webply")';
        }
 
        document.getElementById('weather-icon-img').src = iconoURL;
