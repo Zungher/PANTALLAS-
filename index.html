@@ -60,8 +60,6 @@
      position: relative;
      width: 100%;
      height: 100%;
-     max-width: 100%;
-     max-height: 100%;
      color: #fff;
      display: flex;
      flex-direction: column;
@@ -69,6 +67,7 @@
      align-items: center;
      padding: 20px;
      box-sizing: border-box;
+     background-color: #111; /* Color de respaldo en caso de no cargar imagen */
      background-size: cover;
      background-position: center;
      background-repeat: no-repeat;
@@ -132,6 +131,7 @@
    .detail-icon {
      width: 32px;
      height: 32px;
+     object-fit: contain;
    }
 
    .forecast {
@@ -189,15 +189,15 @@
 
        <div class="details">
          <div class="detail-item">
-           <img src="https://cdn-icons-png.flaticon.com/512/2930/2930014.png" alt="wind" class="detail-icon">
+           <img src="https://cdn-icons-png.flaticon.com/512/2930/2930014.png" alt="Viento" class="detail-icon">
            <span id="wind">-- km/h</span>
          </div>
          <div class="detail-item">
-           <img src="https://cdn-icons-png.flaticon.com/512/728/728093.png" alt="humidity" class="detail-icon">
+           <img src="https://cdn-icons-png.flaticon.com/512/728/728093.png" alt="Humedad" class="detail-icon">
            <span id="humidity">--%</span>
          </div>
          <div class="detail-item">
-           <img src="https://cdn-icons-png.flaticon.com/512/484/484167.png" alt="pressure" class="detail-icon">
+           <img src="https://cdn-icons-png.flaticon.com/512/484/484167.png" alt="Presión" class="detail-icon">
            <span id="pressure">-- hPa</span>
          </div>
        </div>
@@ -276,25 +276,27 @@
        document.getElementById('pressure').innerText = `${data.presion || '1012'} hPa`;
 
        const estado = (data.estado || '').toLowerCase();
-       let iconoURL = 'https://cdn-icons-png.flaticon.com/512/1163/1163624.png'; // icono por defecto
+       let iconoURL = 'https://cdn-icons-png.flaticon.com/512/1163/1163624.png';
        let bgImage = 'url("https://source.unsplash.com/1600x900/?weather")';
 
        if (estado.includes('despejado')) {
-         iconoURL = 'https://cdn-icons-png.flaticon.com/512/869/869869.png'; // Sol
+         iconoURL = 'https://cdn-icons-png.flaticon.com/512/869/869869.png';
          bgImage = 'url("https://media.istockphoto.com/id/824800468/es/foto/sol-en-el-cielo-azul-con-nubes.jpg")';
        } else if (estado.includes('nublado')) {
-         iconoURL = 'https://cdn-icons-png.flaticon.com/512/414/414825.png'; // Nube
+         iconoURL = 'https://cdn-icons-png.flaticon.com/512/414/414825.png';
          bgImage = 'url("https://media.istockphoto.com/id/1156241578/es/foto/cielo-oscuro-con-nubes-de-tormenta.jpg")';
        } else if (estado.includes('lluvia')) {
-         iconoURL = 'https://cdn-icons-png.flaticon.com/512/1163/1163624.png'; // Lluvia
+         iconoURL = 'https://cdn-icons-png.flaticon.com/512/1163/1163624.png';
          bgImage = 'url("https://media.istockphoto.com/id/1429701799/es/foto/gotas-de-lluvia-sobre-asfalto.jpg")';
        }
 
-       document.getElementById('weather-icon-img').src = iconoURL;
+       // Aplica el fondo al contenedor
        const weatherContainer = document.getElementById('weather-container');
        weatherContainer.style.backgroundImage = bgImage;
-       weatherContainer.style.backgroundSize = "cover";
-       weatherContainer.style.backgroundPosition = "center";
+       weatherContainer.style.backgroundColor = '#111'; // color de respaldo
+
+       // Cambia el icono del clima
+       document.getElementById('weather-icon-img').src = iconoURL;
 
      } catch (error) {
        console.error('Error al cargar el clima', error);
