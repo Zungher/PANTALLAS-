@@ -262,22 +262,22 @@
         let iconoSrc = 'images/default.gif'; // Ruta por defecto
         let bgImage = 'url("https://source.unsplash.com/1600x900/?weather")';
 
-        if (estado.includes('despejado')) {
+       if (estado.includes('despejado')) {
           iconoSrc = 'images/sunny.gif';
-          bgImage = 'url("https://media.istockphoto.com/id/824800468/es/foto/sol-en-el-cielo-azul-con-nubes.jpg")';
-        } else if (estado.includes('nublado')) {
+          bgImage = 'url("images/despejado-bg.jpg")';
+      } else if (estado.includes('nublado')) {
           iconoSrc = 'images/cloudy.gif';
-          bgImage = 'url("https://media.istockphoto.com/id/1156241578/es/foto/cielo-oscuro-con-nubes-de-tormenta.jpg")';
-        } else if (estado.includes('lluvia')) {
+          bgImage = 'url("images/nublado-bg.jpg")';
+      } else if (estado.includes('lluvia')) {
           iconoSrc = 'images/rainy.gif';
-          bgImage = 'url("https://media.istockphoto.com/id/1429701799/es/foto/gotas-de-lluvia-sobre-asfalto.jpg")';
-        } else if (estado.includes('chubasco')) {
+          bgImage = 'url("images/lluvia-bg.jpg")';
+      } else if (estado.includes('chubasco')) {
           iconoSrc = 'images/shower.gif';
-          bgImage = 'url("https://cdn0.ecologiaverde.com/es/posts/1/7/6/que_son_los_chubascos_4671_0_600.jpg")';
-        } else if (estado.includes('niebla')) {
+          bgImage = 'url("images/chubasco-bg.jpg")';
+      } else if (estado.includes('niebla')) {
           iconoSrc = 'images/foggy.gif';
-          bgImage = 'url("https://fotografias.larazon.es/clipping/cmsimages01/2023/12/02/C23C7773-C437-4B86-93D6-7A41E43D3BF2/que-niebla-cuales-son-sus-tipos_98.jpg")';
-        }
+          bgImage = 'url("images/niebla-bg.jpg")';
+      }
 
         // Inserta el GIF en el div de weather-icon
         document.getElementById('weather-icon').innerHTML = `
