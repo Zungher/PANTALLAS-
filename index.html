@@ -255,8 +255,8 @@
         document.getElementById('current-temp').innerText = data.temperatura || '--°C';
         document.getElementById('description').innerText = data.estado || 'Sin datos';
         document.getElementById('wind').innerText = `💨 ${data.viento || '-- km/h'}`;
-        document.getElementById('humidity').innerText = `💧 80%`; // ejemplo
-        document.getElementById('pressure').innerText = `⏲️ 1012 hPa`; // ejemplo
+        document.getElementById('humidity').innerText = `💧 ${data.humedad || '--%'}`;
+        document.getElementById('pressure').innerText = `⏲️ ${data.presion || '-- hPa'}`;
 
         const estado = (data.estado || '').toLowerCase();
         let iconoSrc = 'images/default.gif'; // Ruta por defecto
