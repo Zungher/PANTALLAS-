@@ -117,19 +117,26 @@
       margin-bottom: 10px;
     }
 
+    /* Ajustes en detalles */
     .details {
       display: flex;
       justify-content: center;
-      gap: 2vw;
+      align-items: center;
+      gap: 3vw; /* Separación entre viento, humedad y presión */
       margin-top: 20px;
       font-size: 1.5vw;
       flex-wrap: wrap;
     }
 
+    .details div {
+      display: flex;
+      align-items: center; /* Alinea ícono y texto verticalmente */
+      gap: 10px; /* Espacio entre el ícono y el texto */
+    }
+
     .details div img {
-      width: 24px;
-      vertical-align: middle;
-      margin-right: 8px;
+      width: 32px;
+      height: auto;
     }
 
     .forecast {
@@ -186,6 +193,8 @@
           <div id="weather-icon"></div>
           <div id="description">Cargando...</div>
         </div>
+
+        <!-- Detalles: viento, humedad y presión -->
         <div class="details">
           <div id="wind">
             <img src="images/wind.gif" alt="Viento"> -- km/h
@@ -199,8 +208,8 @@
         </div>
       </div>
 
+      <!-- Pronóstico -->
       <div class="forecast" id="forecast-container">
-        <!-- Pronóstico de ejemplo -->
         <div class="forecast-hour">
           <div>08:00</div>
           <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="cloudy">
@@ -267,7 +276,7 @@
         document.getElementById('current-temp').innerText = data.temperatura || '--°C';
         document.getElementById('description').innerText = data.estado || 'Sin datos';
 
-        // Aquí están los íconos personalizados
+        // Íconos con las nuevas imágenes .gif
         document.getElementById('wind').innerHTML = `
           <img src="images/wind.gif" alt="Viento"> ${data.viento || '-- km/h'}`;
 
