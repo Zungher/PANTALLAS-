@@ -258,26 +258,47 @@
         document.getElementById('humidity').innerText = `💧 ${data.humedad || '--%'}`;
         document.getElementById('pressure').innerText = `⏲️ ${data.presion || '-- hPa'}`;
 
+        // Condición del clima
         const estado = (data.estado || '').toLowerCase();
-        let iconoSrc = 'images/default.gif'; // Ruta por defecto
+
+        // Determina la hora local
+        const hour = new Date().getHours();
+        // Define rangos de madrugada y noche
+        const isMadrugada = hour >= 0 && hour < 6;
+        const isNoche = hour >= 18 && hour < 24;
+
+        // Valores por defecto
+        let iconoSrc = 'images/default.gif';
         let bgImage = 'url("https://source.unsplash.com/1600x900/?weather")';
 
-       if (estado.includes('despejado')) {
+        // Lógica según la descripción del clima (principalmente para el día)
+        if (estado.includes('despejado')) {
           iconoSrc = 'images/sunny.gif';
           bgImage = 'url("images/despejado-bg.jpg")';
-      } else if (estado.includes('nublado')) {
+        } else if (estado.includes('nublado')) {
           iconoSrc = 'images/cloudy.gif';
           bgImage = 'url("images/nublado-bg.jpg")';
-      } else if (estado.includes('lluvia')) {
+        } else if (estado.includes('lluvia')) {
           iconoSrc = 'images/rainy.gif';
           bgImage = 'url("images/lluvia-bg.jpg")';
-      } else if (estado.includes('chubasco')) {
+        } else if (estado.includes('chubasco')) {
           iconoSrc = 'images/shower.gif';
           bgImage = 'url("images/chubasco-bg.jpg")';
-      } else if (estado.includes('niebla')) {
+        } else if (estado.includes('niebla')) {
           iconoSrc = 'images/foggy.gif';
           bgImage = 'url("images/niebla-bg.jpg")';
-      }
+        }
+
+        // Sobrescribir el fondo si detectamos que es madrugada o noche
+        if (isMadrugada) {
+          bgImage = 'url("images/madrugada-bg.jpg")';
+          // Opcional: cambiar ícono si deseas algo específico para madrugada
+          // iconoSrc = 'images/madrugada.gif';
+        } else if (isNoche) {
+          bgImage = 'url("images/noche-bg.jpg")';
+          // Opcional: cambiar ícono si deseas algo específico para la noche
+          // iconoSrc = 'images/night.gif';
+        }
 
         // Inserta el GIF en el div de weather-icon
         document.getElementById('weather-icon').innerHTML = `
