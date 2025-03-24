@@ -126,6 +126,12 @@
       flex-wrap: wrap;
     }
 
+    .details div img {
+      width: 24px;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
     .forecast {
       background-color: rgba(0,0,0,0.3);
       backdrop-filter: blur(5px);
@@ -181,9 +187,15 @@
           <div id="description">Cargando...</div>
         </div>
         <div class="details">
-          <div id="wind">💨 -- km/h</div>
-          <div id="humidity">💧 --%</div>
-          <div id="pressure">⏲️ -- hPa</div>
+          <div id="wind">
+            <img src="images/wind.gif" alt="Viento"> -- km/h
+          </div>
+          <div id="humidity">
+            <img src="images/humidity.gif" alt="Humedad"> --%
+          </div>
+          <div id="pressure">
+            <img src="images/pressure.gif" alt="Presión"> -- hPa
+          </div>
         </div>
       </div>
 
@@ -254,24 +266,25 @@
         document.getElementById('city').innerText = "Guatemala";
         document.getElementById('current-temp').innerText = data.temperatura || '--°C';
         document.getElementById('description').innerText = data.estado || 'Sin datos';
-        document.getElementById('wind').innerText = `💨 ${data.viento || '-- km/h'}`;
-        document.getElementById('humidity').innerText = `💧 ${data.humedad || '--%'}`;
-        document.getElementById('pressure').innerText = `⏲️ ${data.presion || '-- hPa'}`;
 
-        // Condición del clima
+        // Aquí están los íconos personalizados
+        document.getElementById('wind').innerHTML = `
+          <img src="images/wind.gif" alt="Viento"> ${data.viento || '-- km/h'}`;
+
+        document.getElementById('humidity').innerHTML = `
+          <img src="images/humidity.gif" alt="Humedad"> ${data.humedad || '--%'}`;
+
+        document.getElementById('pressure').innerHTML = `
+          <img src="images/pressure.gif" alt="Presión"> ${data.presion || '-- hPa'}`;
+
         const estado = (data.estado || '').toLowerCase();
-
-        // Determina la hora local
         const hour = new Date().getHours();
-        // Define rangos de madrugada y noche
         const isMadrugada = hour >= 0 && hour < 6;
         const isNoche = hour >= 18 && hour < 24;
 
-        // Valores por defecto
         let iconoSrc = 'images/default.gif';
         let bgImage = 'url("https://source.unsplash.com/1600x900/?weather")';
 
-        // Lógica según la descripción del clima (principalmente para el día)
         if (estado.includes('despejado')) {
           iconoSrc = 'images/sunny.gif';
           bgImage = 'url("images/despejado-bg.jpg")';
@@ -289,18 +302,14 @@
           bgImage = 'url("images/niebla-bg.jpg")';
         }
 
-        // Sobrescribir el fondo si detectamos que es madrugada o noche
         if (isMadrugada) {
           bgImage = 'url("images/madrugada-bg.jpg")';
-          // Opcional: cambiar ícono si deseas algo específico para madrugada
           iconoSrc = 'images/madrugada.gif';
         } else if (isNoche) {
           bgImage = 'url("images/noche-bg.jpg")';
-          // Opcional: cambiar ícono si deseas algo específico para la noche
           iconoSrc = 'images/night.gif';
         }
 
-        // Inserta el GIF en el div de weather-icon
         document.getElementById('weather-icon').innerHTML = `
           <img src="${iconoSrc}" alt="icono clima">
         `;
