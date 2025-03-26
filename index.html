@@ -162,7 +162,7 @@
   </style>
 </head>
 
-<body>
+<body onload="document.getElementById('weather-container').style.backgroundImage='url(./images/nublado-bg.jpg)'">
   <!-- Sección Vuelos -->
   <div class="section vuelos">
     <iframe src="https://zungher.github.io/API---VUELOS-/public/index.html"></iframe>
@@ -180,13 +180,13 @@
         </div>
         <div class="details">
           <div id="wind">
-            <img src="images/wind.gif" alt="Viento"> -- km/h
+            <img src="./images/wind.gif" alt="Viento"> -- km/h
           </div>
           <div id="humidity">
-            <img src="images/humidity.gif" alt="Humedad"> --%
+            <img src="./images/humidity.gif" alt="Humedad"> --%
           </div>
           <div id="pressure">
-            <img src="images/pressure.gif" alt="Presión"> -- hPa
+            <img src="./images/pressure.gif" alt="Presión"> -- hPa
           </div>
         </div>
       </div>
@@ -210,46 +210,46 @@
         document.getElementById('current-temp').innerText = data.temperatura || '--°C';
         document.getElementById('description').innerText = data.estado || 'Sin datos';
 
-        document.getElementById('wind').innerHTML = `<img src="images/wind.gif" alt="Viento"> ${data.viento || '-- km/h'}`;
-        document.getElementById('humidity').innerHTML = `<img src="images/humidity.gif" alt="Humedad"> ${data.humedad || '--%'}`;
-        document.getElementById('pressure').innerHTML = `<img src="images/pressure.gif" alt="Presión"> ${data.presion || '-- hPa'}`;
+        document.getElementById('wind').innerHTML = `<img src="./images/wind.gif" alt="Viento"> ${data.viento || '-- km/h'}`;
+        document.getElementById('humidity').innerHTML = `<img src="./images/humidity.gif" alt="Humedad"> ${data.humedad || '--%'}`;
+        document.getElementById('pressure').innerHTML = `<img src="./images/pressure.gif" alt="Presión"> ${data.presion || '-- hPa'}`;
 
         const estado = (data.estado || '').toLowerCase();
         const hour = new Date().getHours();
         const isMadrugada = hour >= 0 && hour < 6;
         const isNoche = hour >= 18 && hour < 24;
 
-        let iconoSrc = 'images/default.gif';
-        let bgImage = 'url("https://source.unsplash.com/1600x900/?weather")';
+        let iconoSrc = './images/default.gif';
+        let bgImage = 'url("./images/default-bg.jpg")';
 
         if (estado.includes('despejado')) {
-          iconoSrc = 'images/sunny.gif';
-          bgImage = 'url("images/despejado-bg.jpg")';
+          iconoSrc = './images/sunny.gif';
+          bgImage = 'url("./images/despejado-bg.jpg")';
         } else if (estado.includes('nublado')) {
-          iconoSrc = 'images/cloudy.gif';
-          bgImage = 'url("images/nublado-bg.jpg")';
+          iconoSrc = './images/cloudy.gif';
+          bgImage = 'url("./images/nublado-bg.jpg")';
         } else if (estado.includes('lluvia')) {
-          iconoSrc = 'images/rainy.gif';
-          bgImage = 'url("images/lluvia-bg.jpg")';
+          iconoSrc = './images/rainy.gif';
+          bgImage = 'url("./images/lluvia-bg.jpg")';
         } else if (estado.includes('chubasco')) {
-          iconoSrc = 'images/shower.gif';
-          bgImage = 'url("images/chubasco-bg.jpg")';
+          iconoSrc = './images/shower.gif';
+          bgImage = 'url("./images/chubasco-bg.jpg")';
         } else if (estado.includes('niebla')) {
-          iconoSrc = 'images/foggy.gif';
-          bgImage = 'url("images/niebla-bg.jpg")';
+          iconoSrc = './images/foggy.gif';
+          bgImage = 'url("./images/niebla-bg.jpg")';
         }
 
         if (isMadrugada) {
-          bgImage = 'url("images/madrugada-bg.jpg")';
-          iconoSrc = 'images/madrugada.gif';
+          iconoSrc = './images/madrugada.gif';
+          bgImage = 'url("./images/madrugada-bg.jpg")';
         } else if (isNoche) {
-          bgImage = 'url("images/noche-bg.jpg")';
-          iconoSrc = 'images/night.gif';
+          iconoSrc = './images/night.gif';
+          bgImage = 'url("./images/noche-bg.jpg")';
         }
 
         document.getElementById('weather-icon').innerHTML = `<img src="${iconoSrc}" alt="icono clima">`;
         document.getElementById('weather-container').style.backgroundImage = bgImage;
-
+        console.log("Imagen de fondo cargada:", bgImage);
       } catch (error) {
         console.error('Error al cargar el clima', error);
       }
@@ -262,10 +262,10 @@
       document.body.classList.add('visible');
     });
 
-    // Fade-out justo antes del refresh automático (5s antes)
+    // Fade-out antes del refresh automático
     setTimeout(() => {
       document.body.classList.remove('visible');
-    }, 295000); // 295000ms = 4 min 55 s
+    }, 295000); // 4 min 55 s
   </script>
 
 </body>
