@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="refresh" content="300" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Informativo</title>
+  <title>Panel Informativo - Prueba Fondo</title>
 
   <style>
     body {
@@ -180,7 +180,8 @@
   <!-- CLIMA -->
   <div class="section clima">
     <div class="weather-container" id="weather-container">
-      <img id="bg-fondo" src="https://zungher.github.io/PANTALLAS-/images/nublado-bg.jpg" alt="" aria-hidden="true">
+      <!-- Imagen de prueba como fondo fijo -->
+      <img id="bg-fondo" src="https://zungher.github.io/PANTALLAS-/images/test.jpg" alt="" aria-hidden="true">
       <div class="overlay"></div>
 
       <div class="weather-main">
@@ -208,62 +209,6 @@
   </div>
 
   <script>
-    async function cargarClima() {
-      try {
-        const res = await fetch('https://clima-git-main-zunghers-projects.vercel.app/');
-        const data = await res.json();
-
-        document.getElementById('city').innerText = "Guatemala";
-        document.getElementById('current-temp').innerText = data.temperatura || '--°C';
-        document.getElementById('description').innerText = data.estado || 'Sin datos';
-
-        document.getElementById('wind').innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/wind.gif"> ${data.viento || '-- km/h'}`;
-        document.getElementById('humidity').innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/humidity.gif"> ${data.humedad || '--%'}`;
-        document.getElementById('pressure').innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/pressure.gif"> ${data.presion || '-- hPa'}`;
-
-        const estado = (data.estado || '').toLowerCase();
-        const hour = new Date().getHours();
-        const isMadrugada = hour >= 0 && hour < 6;
-        const isNoche = hour >= 18 && hour < 24;
-
-        let iconoSrc = 'https://zungher.github.io/PANTALLAS-/images/default.gif';
-        let bgImage = 'https://zungher.github.io/PANTALLAS-/images/default-bg.jpg';
-
-        if (estado.includes('despejado')) {
-          iconoSrc = 'https://zungher.github.io/PANTALLAS-/images/sunny.gif';
-          bgImage = 'https://zungher.github.io/PANTALLAS-/images/despejado-bg.jpg';
-        } else if (estado.includes('nublado')) {
-          iconoSrc = 'https://zungher.github.io/PANTALLAS-/images/cloudy.gif';
-          bgImage = 'https://zungher.github.io/PANTALLAS-/images/nublado-bg.jpg';
-        } else if (estado.includes('lluvia')) {
-          iconoSrc = 'https://zungher.github.io/PANTALLAS-/images/rainy.gif';
-          bgImage = 'https://zungher.github.io/PANTALLAS-/images/lluvia-bg.jpg';
-        } else if (estado.includes('chubasco')) {
-          iconoSrc = 'https://zungher.github.io/PANTALLAS-/images/shower.gif';
-          bgImage = 'https://zungher.github.io/PANTALLAS-/images/chubasco-bg.jpg';
-        } else if (estado.includes('niebla')) {
-          iconoSrc = 'https://zungher.github.io/PANTALLAS-/images/foggy.gif';
-          bgImage = 'https://zungher.github.io/PANTALLAS-/images/niebla-bg.jpg';
-        }
-
-        if (isMadrugada) {
-          iconoSrc = 'https://zungher.github.io/PANTALLAS-/images/madrugada.gif';
-          bgImage = 'https://zungher.github.io/PANTALLAS-/images/madrugada-bg.jpg';
-        } else if (isNoche) {
-          iconoSrc = 'https://zungher.github.io/PANTALLAS-/images/night.gif';
-          bgImage = 'https://zungher.github.io/PANTALLAS-/images/noche-bg.jpg';
-        }
-
-        document.getElementById('weather-icon').innerHTML = `<img src="${iconoSrc}" alt="icono clima">`;
-        document.getElementById('bg-fondo').src = bgImage;
-
-      } catch (error) {
-        console.error('Error al cargar el clima', error);
-      }
-    }
-
-    cargarClima();
-
     window.addEventListener('load', () => {
       document.body.classList.add('visible');
     });
