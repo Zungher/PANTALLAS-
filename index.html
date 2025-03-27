@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="refresh" content="300" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Informativo - Prueba Fondo</title>
+  <title>Panel Informativo</title>
 
   <style>
     body {
@@ -58,18 +58,20 @@
       justify-content: space-between;
       padding: 20px;
       box-sizing: border-box;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
-    #bg-fondo {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-      pointer-events: none;
-    }
+    /* FONDOS POR CLIMA */
+    .fondo-nublado   { background-image: url('https://zungher.github.io/PANTALLAS-/images/nublado-bg.jpg'); }
+    .fondo-despejado { background-image: url('https://zungher.github.io/PANTALLAS-/images/despejado-bg.jpg'); }
+    .fondo-lluvia    { background-image: url('https://zungher.github.io/PANTALLAS-/images/lluvia-bg.jpg'); }
+    .fondo-chubasco  { background-image: url('https://zungher.github.io/PANTALLAS-/images/chubasco-bg.jpg'); }
+    .fondo-niebla    { background-image: url('https://zungher.github.io/PANTALLAS-/images/niebla-bg.jpg'); }
+    .fondo-noche     { background-image: url('https://zungher.github.io/PANTALLAS-/images/noche-bg.jpg'); }
+    .fondo-madrugada { background-image: url('https://zungher.github.io/PANTALLAS-/images/madrugada-bg.jpg'); }
+    .fondo-default   { background-image: url('https://zungher.github.io/PANTALLAS-/images/test.jpg'); }
 
     .overlay {
       position: absolute;
@@ -179,9 +181,7 @@
 
   <!-- CLIMA -->
   <div class="section clima">
-    <div class="weather-container" id="weather-container">
-      <!-- Imagen de prueba como fondo fijo -->
-      <img id="bg-fondo" src="https://zungher.github.io/PANTALLAS-/images/test.jpg" alt="" aria-hidden="true">
+    <div class="weather-container fondo-default" id="weather-container">
       <div class="overlay"></div>
 
       <div class="weather-main">
@@ -209,12 +209,68 @@
   </div>
 
   <script>
-    window.addEventListener('load', () => {
-      document.body.classList.add('visible');
+    function aplicarFondo(estado, hora) {
+      const contenedor = document.getElementById("weather-container");
+      contenedor.className = "weather-container overlay fondo-default"; // reset
+      
+      if (hora >= 0 && hora < 6) {
+        contenedor.classList.add("fondo-madrugada");
+        return;
+      } else if (hora >= 18 && hora < 24) {
+        contenedor.classList.add("fondo-noche");
+        return;
+      }
+
+      if (estado.includes("despejado")) contenedor.classList.add("fondo-despejado");
+      else if (estado.includes("nublado")) contenedor.classList.add("fondo-nublado");
+      else if (estado.includes("lluvia")) contenedor.classList.add("fondo-lluvia");
+      else if (estado.includes("chubasco")) contenedor.classList.add("fondo-chubasco");
+      else if (estado.includes("niebla")) contenedor.classList.add("fondo-niebla");
+      else contenedor.classList.add("fondo-default");
+    }
+
+    async function cargarClima() {
+      try {
+        const res = await fetch('https://clima-git-main-zunghers-projects.vercel.app/');
+        const data = await res.json();
+
+        document.getElementById('city').innerText = "Guatemala";
+        document.getElementById('current-temp').innerText = data.temperatura || '--°C';
+        document.getElementById('description').innerText = data.estado || 'Sin datos';
+
+        document.getElementById('wind').innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/wind.gif"> ${data.viento || '-- km/h'}`;
+        document.getElementById('humidity').innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/humidity.gif"> ${data.humedad || '--%'}`;
+        document.getElementById('pressure').innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/pressure.gif"> ${data.presion || '-- hPa'}`;
+
+        const estado = (data.estado || '').toLowerCase();
+        const hora = new Date().getHours();
+        aplicarFondo(estado, hora);
+
+        // Icono animado
+        let icono = "default.gif";
+        if (estado.includes("despejado")) icono = "sunny.gif";
+        else if (estado.includes("nublado")) icono = "cloudy.gif";
+        else if (estado.includes("lluvia")) icono = "rainy.gif";
+        else if (estado.includes("chubasco")) icono = "shower.gif";
+        else if (estado.includes("niebla")) icono = "foggy.gif";
+        if (hora >= 0 && hora < 6) icono = "madrugada.gif";
+        else if (hora >= 18) icono = "night.gif";
+
+        document.getElementById("weather-icon").innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/${icono}">`;
+
+      } catch (error) {
+        console.error("Error al cargar el clima", error);
+      }
+    }
+
+    cargarClima();
+
+    window.addEventListener("load", () => {
+      document.body.classList.add("visible");
     });
 
     setTimeout(() => {
-      document.body.classList.remove('visible');
+      document.body.classList.remove("visible");
     }, 295000);
   </script>
 </body>
