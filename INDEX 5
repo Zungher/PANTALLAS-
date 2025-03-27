@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="300" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Informativo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #000;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    body.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .section {
+      border: 4px solid #000;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+    }
+
+    .vuelos {
+      flex: 2.5;
+    }
+
+    .clima {
+      flex: 1.2;
+      position: relative;
+      overflow: hidden;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- VUELOS -->
+  <div class="section vuelos">
+    <iframe src="https://zungher.github.io/API---VUELOS-/public/index.html"></iframe>
+  </div>
+
+  <!-- CLIMA (contenedor vacío) -->
+  <div class="section clima">
+   <iframe src="https://zungher.github.io/WEB-CLIMA/"></iframe>
+  </div>
+
+  <script>
+    window.addEventListener("load", () => {
+      document.body.classList.add("visible");
+    });
+
+    setTimeout(() => {
+      document.body.classList.remove("visible");
+    }, 295000);
+  </script>
+</body>
+</html>
