@@ -76,7 +76,7 @@
     .fondo-niebla    { background-image: url('https://zungher.github.io/PANTALLAS-/images/niebla-bg.jpg'); }
     .fondo-noche     { background-image: url('https://zungher.github.io/PANTALLAS-/images/noche-bg.jpg'); }
     .fondo-madrugada { background-image: url('https://zungher.github.io/PANTALLAS-/images/madrugada-bg.jpg'); }
-    .fondo-default   { background-image: url('https://zungher.github.io/PANTALLAS-/images/test.jpg'); }
+    .fondo-default   { background-image: none; }
 
     .overlay {
       position: absolute;
@@ -217,21 +217,32 @@
   <script>
     function aplicarFondo(estado, hora) {
       const contenedor = document.getElementById("weather-container");
-      contenedor.className = "weather-container fondo-default";
 
+      // Quitar todas las clases anteriores
+      contenedor.classList.remove(
+        "fondo-default", "fondo-nublado", "fondo-despejado",
+        "fondo-lluvia", "fondo-chubasco", "fondo-niebla",
+        "fondo-noche", "fondo-madrugada"
+      );
+
+      // Elegir nuevo fondo según estado y hora
       if (hora >= 0 && hora < 6) {
         contenedor.classList.add("fondo-madrugada");
-        return;
-      } else if (hora >= 18 && hora < 24) {
+      } else if (hora >= 18) {
         contenedor.classList.add("fondo-noche");
-        return;
+      } else if (estado.includes("despejado")) {
+        contenedor.classList.add("fondo-despejado");
+      } else if (estado.includes("nublado")) {
+        contenedor.classList.add("fondo-nublado");
+      } else if (estado.includes("lluvia")) {
+        contenedor.classList.add("fondo-lluvia");
+      } else if (estado.includes("chubasco")) {
+        contenedor.classList.add("fondo-chubasco");
+      } else if (estado.includes("niebla")) {
+        contenedor.classList.add("fondo-niebla");
+      } else {
+        contenedor.classList.add("fondo-default");
       }
-
-      if (estado.includes("despejado")) contenedor.classList.add("fondo-despejado");
-      else if (estado.includes("nublado")) contenedor.classList.add("fondo-nublado");
-      else if (estado.includes("lluvia")) contenedor.classList.add("fondo-lluvia");
-      else if (estado.includes("chubasco")) contenedor.classList.add("fondo-chubasco");
-      else if (estado.includes("niebla")) contenedor.classList.add("fondo-niebla");
     }
 
     async function cargarClima() {
