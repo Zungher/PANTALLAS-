@@ -4,186 +4,166 @@
   <meta charset="UTF-8">
   <meta http-equiv="refresh" content="300">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Informativo Mejorado</title>
+  <title>Panel Informativo</title>
 
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+ <style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #000;
+  }
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      background-color: #000;
-    }
+  .section {
+    border: 4px solid #000;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
 
-    .section {
-      border: 2px solid #000;
-      box-sizing: border-box;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0;
-    }
+  .vuelos {
+    flex: 2.5; 
+  }
 
-    .vuelos {
-      flex: 1;
-    }
+  .clima {
+    flex: 1.5; 
+  }
 
-    .mapa {
-      flex: 1;
-      position: relative;
-    }
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
 
-    .clima {
-      flex: 1.2;
-    }
+  .weather-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    box-sizing: border-box;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 0.5s ease-in-out;
+  }
 
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+  .weather-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
+    z-index: 1;
+  }
 
-    #map {
-      width: 100%;
-      height: 100%;
-    }
+  .weather-main, .forecast {
+    position: relative;
+    z-index: 2;
+  }
 
-    .weather-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      max-width: 100%;
-      max-height: 100%;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 20px;
-      box-sizing: border-box;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      transition: background-image 0.5s ease-in-out;
-    }
+  .weather-main {
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 0;
+  }
 
-    .weather-container::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
-      z-index: 1;
-    }
+  .city {
+    font-size: 4vw;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
 
-    .weather-main, .forecast {
-      position: relative;
-      z-index: 2;
-    }
+  .temp {
+    font-size: 7vw;
+    margin: 5px 0;
+    font-weight: 300;
+  }
 
-    .weather-main {
-      text-align: center;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 20px 0;
-    }
+  .condition {
+    font-size: 2.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
 
-    .city {
-      font-size: 3vw;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+  .details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4vw;
+    margin-top: 10px;
+    font-size: 2vw;
+    flex-wrap: wrap;
+  }
 
-    .temp {
-      font-size: 6vw;
-      margin: 10px 0;
-      font-weight: 300;
-    }
+  .details div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    .condition {
-      font-size: 2vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
+  .details div img {
+    width: 40px;
+    height: auto;
+  }
 
-    /* Ajustes en detalles */
-    .details {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 3vw; /* Separación entre viento, humedad y presión */
-      margin-top: 20px;
-      font-size: 1.5vw;
-      flex-wrap: wrap;
-    }
+  #weather-icon img {
+    width: 140px;
+    height: 140px;
+  }
 
-    .details div {
-      display: flex;
-      align-items: center; /* Alinea ícono y texto verticalmente */
-      gap: 10px; /* Espacio entre el ícono y el texto */
-    }
+  .forecast {
+    background-color: rgba(0,0,0,0.3);
+    backdrop-filter: blur(5px);
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
 
-    .details div img {
-      width: 32px;
-      height: auto;
-    }
+  .forecast-hour {
+    text-align: center;
+    flex: 1;
+    min-width: 80px;
+    font-size: 1.5vw;
+    color: #fff;
+    margin: 5px;
+  }
 
-    .forecast {
-      background-color: rgba(0,0,0,0.3);
-      backdrop-filter: blur(5px);
-      padding: 10px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
+  .forecast-hour img {
+    width: 64px;
+    height: 64px;
+    margin: 8px 0;
+  }
+</style>
 
-    .forecast-hour {
-      text-align: center;
-      flex: 1;
-      min-width: 80px;
-      font-size: 1.2vw;
-      color: #fff;
-      margin: 5px;
-    }
-
-    .forecast-hour img {
-      width: 48px;
-      height: 48px;
-      margin: 8px 0;
-    }
-
-    #weather-icon img {
-      width: 120px;
-      height: 120px;
-    }
-  </style>
 </head>
 <body>
 
-  <!-- Sección 1: Vuelos -->
+  <!-- Sección Vuelos -->
   <div class="section vuelos">
     <iframe src="https://zungher.github.io/API---VUELOS-/public/index.html"></iframe>
   </div>
 
-  <!-- Sección 2: Mapa (Leaflet integrado) -->
-  <div class="section mapa">
-    <div id="map"></div>
-  </div>
-
-  <!-- Sección 3: Clima dinámico mejorado -->
+  <!-- Sección Clima -->
   <div class="section clima">
     <div class="weather-container" id="weather-container">
       <div class="weather-main">
@@ -193,8 +173,6 @@
           <div id="weather-icon"></div>
           <div id="description">Cargando...</div>
         </div>
-
-        <!-- Detalles: viento, humedad y presión -->
         <div class="details">
           <div id="wind">
             <img src="images/wind.gif" alt="Viento"> -- km/h
@@ -207,66 +185,18 @@
           </div>
         </div>
       </div>
-
-      <!-- Pronóstico -->
       <div class="forecast" id="forecast-container">
-        <div class="forecast-hour">
-          <div>08:00</div>
-          <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="cloudy">
-          <div>6°C</div>
-        </div>
-        <div class="forecast-hour">
-          <div>09:00</div>
-          <img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png" alt="rain">
-          <div>5°C</div>
-        </div>
-        <div class="forecast-hour">
-          <div>10:00</div>
-          <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="cloudy">
-          <div>5°C</div>
-        </div>
-        <div class="forecast-hour">
-          <div>11:00</div>
-          <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="cloudy">
-          <div>6°C</div>
-        </div>
-        <div class="forecast-hour">
-          <div>12:00</div>
-          <img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png" alt="rain">
-          <div>7°C</div>
-        </div>
+        <!-- Pronóstico fijo de ejemplo -->
+        <div class="forecast-hour"><div>08:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png"><div>6°C</div></div>
+        <div class="forecast-hour"><div>09:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png"><div>5°C</div></div>
+        <div class="forecast-hour"><div>10:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png"><div>5°C</div></div>
+        <div class="forecast-hour"><div>11:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png"><div>6°C</div></div>
+        <div class="forecast-hour"><div>12:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png"><div>7°C</div></div>
       </div>
     </div>
   </div>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
   <script>
-    // ===================== Mapa Dinámico =======================
-    const hotelLatLng = [14.6094, -90.5186];
-    const aeropuertoLatLng = [14.5833, -90.5270];
-
-    const map = L.map('map').setView([14.596, -90.523], 14);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    L.marker(hotelLatLng).addTo(map)
-      .bindPopup('<b>Hotel Barceló Guatemala City</b>').openPopup();
-
-    L.marker(aeropuertoLatLng).addTo(map)
-      .bindPopup('<b>Aeropuerto La Aurora</b>');
-
-    const ruta = L.polyline([hotelLatLng, aeropuertoLatLng], {
-      color: 'red',
-      weight: 5
-    }).addTo(map);
-
-    map.fitBounds(ruta.getBounds());
-
-    // ===================== Clima Dinámico =======================
     async function cargarClima() {
       try {
         const res = await fetch('https://clima-git-main-zunghers-projects.vercel.app/');
@@ -276,15 +206,9 @@
         document.getElementById('current-temp').innerText = data.temperatura || '--°C';
         document.getElementById('description').innerText = data.estado || 'Sin datos';
 
-        // Íconos con las nuevas imágenes .gif
-        document.getElementById('wind').innerHTML = `
-          <img src="images/wind.gif" alt="Viento"> ${data.viento || '-- km/h'}`;
-
-        document.getElementById('humidity').innerHTML = `
-          <img src="images/humidity.gif" alt="Humedad"> ${data.humedad || '--%'}`;
-
-        document.getElementById('pressure').innerHTML = `
-          <img src="images/pressure.gif" alt="Presión"> ${data.presion || '-- hPa'}`;
+        document.getElementById('wind').innerHTML = `<img src="images/wind.gif" alt="Viento"> ${data.viento || '-- km/h'}`;
+        document.getElementById('humidity').innerHTML = `<img src="images/humidity.gif" alt="Humedad"> ${data.humedad || '--%'}`;
+        document.getElementById('pressure').innerHTML = `<img src="images/pressure.gif" alt="Presión"> ${data.presion || '-- hPa'}`;
 
         const estado = (data.estado || '').toLowerCase();
         const hour = new Date().getHours();
@@ -319,14 +243,8 @@
           iconoSrc = 'images/night.gif';
         }
 
-        document.getElementById('weather-icon').innerHTML = `
-          <img src="${iconoSrc}" alt="icono clima">
-        `;
-
-        const weatherContainer = document.getElementById('weather-container');
-        weatherContainer.style.backgroundImage = bgImage;
-        weatherContainer.style.backgroundSize = "cover";
-        weatherContainer.style.backgroundPosition = "center";
+        document.getElementById('weather-icon').innerHTML = `<img src="${iconoSrc}" alt="icono clima">`;
+        document.getElementById('weather-container').style.backgroundImage = bgImage;
 
       } catch (error) {
         console.error('Error al cargar el clima', error);
