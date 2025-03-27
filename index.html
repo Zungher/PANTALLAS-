@@ -58,8 +58,21 @@
       box-sizing: border-box;
     }
 
+    /* Fondo imagen como fondo real */
+    #bg-fondo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      pointer-events: none;
+    }
+
     .weather-main, .forecast {
       z-index: 1;
+      position: relative;
     }
 
     .weather-main {
@@ -143,16 +156,6 @@
       height: 64px;
       margin: 8px 0;
     }
-
-    #bg-fondo {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-    }
   </style>
 </head>
 
@@ -165,8 +168,9 @@
   <!-- CLIMA -->
   <div class="section clima">
     <div class="weather-container" id="weather-container">
-      <!-- Fondo visible en WebOS -->
-      <img id="bg-fondo" src="https://zungher.github.io/PANTALLAS-/images/nublado-bg.jpg" alt="Fondo Clima">
+
+      <!-- Imagen de fondo (visible en WebOS) -->
+      <img id="bg-fondo" src="https://zungher.github.io/PANTALLAS-/images/nublado-bg.jpg" alt="" aria-hidden="true">
 
       <div class="weather-main">
         <div class="city" id="city">Guatemala</div>
@@ -195,6 +199,7 @@
         <div class="forecast-hour"><div>11:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png"><div>6°C</div></div>
         <div class="forecast-hour"><div>12:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png"><div>7°C</div></div>
       </div>
+
     </div>
   </div>
 
@@ -247,7 +252,6 @@
 
         document.getElementById('weather-icon').innerHTML = `<img src="${iconoSrc}" alt="icono clima">`;
         document.getElementById('bg-fondo').src = bgImage;
-        console.log("Fondo actualizado:", bgImage);
 
       } catch (error) {
         console.error('Error al cargar el clima', error);
