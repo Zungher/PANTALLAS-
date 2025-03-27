@@ -56,6 +56,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      align-items: center;
       padding: 20px;
       box-sizing: border-box;
       background-size: cover;
@@ -63,7 +64,7 @@
       background-repeat: no-repeat;
     }
 
-    /* FONDOS POR CLIMA */
+    /* Fondos según el clima */
     .fondo-nublado   { background-image: url('https://zungher.github.io/PANTALLAS-/images/nublado-bg.jpg'); }
     .fondo-despejado { background-image: url('https://zungher.github.io/PANTALLAS-/images/despejado-bg.jpg'); }
     .fondo-lluvia    { background-image: url('https://zungher.github.io/PANTALLAS-/images/lluvia-bg.jpg'); }
@@ -85,17 +86,17 @@
     }
 
     .weather-main, .forecast {
-      z-index: 2;
       position: relative;
+      z-index: 2;
     }
 
     .weather-main {
       text-align: center;
-      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 10px 0;
+      align-items: center;
+      flex: 1;
     }
 
     .city {
@@ -154,6 +155,7 @@
       justify-content: space-around;
       flex-wrap: wrap;
       margin-top: 10px;
+      z-index: 2;
     }
 
     .forecast-hour {
@@ -211,8 +213,8 @@
   <script>
     function aplicarFondo(estado, hora) {
       const contenedor = document.getElementById("weather-container");
-      contenedor.className = "weather-container overlay fondo-default"; // reset
-      
+      contenedor.className = "weather-container overlay fondo-default";
+
       if (hora >= 0 && hora < 6) {
         contenedor.classList.add("fondo-madrugada");
         return;
@@ -246,7 +248,6 @@
         const hora = new Date().getHours();
         aplicarFondo(estado, hora);
 
-        // Icono animado
         let icono = "default.gif";
         if (estado.includes("despejado")) icono = "sunny.gif";
         else if (estado.includes("nublado")) icono = "cloudy.gif";
