@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="300">
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="300" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Informativo</title>
-
   <style>
     body {
       margin: 0;
@@ -14,11 +13,13 @@
       flex-direction: column;
       height: 100vh;
       background-color: #000;
+      visibility: hidden;
       opacity: 0;
       transition: opacity 1.5s ease;
     }
 
     body.visible {
+      visibility: visible;
       opacity: 1;
     }
 
@@ -38,11 +39,8 @@
 
     .clima {
       flex: 1.2;
-      background-color: #000;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      position: relative;
+      overflow: hidden;
     }
 
     iframe {
@@ -50,69 +48,26 @@
       height: 100%;
       border: none;
     }
-
-    #ww_5264f4c694bb0 {
-      width: 100%;
-      height: 100%;
-    }
   </style>
 </head>
-
 <body>
   <!-- VUELOS -->
   <div class="section vuelos">
     <iframe src="https://zungher.github.io/API---VUELOS-/public/index.html"></iframe>
   </div>
 
-<!-- CLIMA: Tomorrow.io widget fullscreen -->
-<div class="section clima" style="position: relative; padding: 0; margin: 0; overflow: hidden;">
-  <div style="width: 100%; height: 100%; position: relative;">
-    <script>
-      (function(d, s, id) {
-          if (d.getElementById(id)) {
-              if (window.__TOMORROW__) {
-                  window.__TOMORROW__.renderWidget();
-              }
-              return;
-          }
-          const fjs = d.getElementsByTagName(s)[0];
-          const js = d.createElement(s);
-          js.id = id;
-          js.src = "https://www.tomorrow.io/v1/widget/sdk/sdk.bundle.min.js";
-          fjs.parentNode.insertBefore(js, fjs);
-      })(document, 'script', 'tomorrow-sdk');
-    </script>
-
-    <div class="tomorrow"
-         data-location-id="053500"
-         data-language="ES"
-         data-unit-system="METRIC"
-         data-skin="dark"
-         data-widget-type="aqiPollen"
-         style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"
-    >
-      <a href="https://www.tomorrow.io/weather-api/"
-         rel="nofollow noopener noreferrer"
-         target="_blank"
-         style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); z-index: 10;">
-        <img
-          alt="Powered by the Tomorrow.io Weather API"
-          src="https://weather-website-client.tomorrow.io/img/powered-by.svg"
-          width="250"
-          height="18"
-        />
-      </a>
-    </div>
+  <!-- CLIMA (contenedor vacío) -->
+  <div class="section clima">
+   <iframe src="https://zungher.github.io/WEB-CLIMA/"></iframe>
   </div>
-</div>
 
   <script>
-    window.addEventListener('load', () => {
-      document.body.classList.add('visible');
+    window.addEventListener("load", () => {
+      document.body.classList.add("visible");
     });
 
     setTimeout(() => {
-      document.body.classList.remove('visible');
+      document.body.classList.remove("visible");
     }, 295000);
   </script>
 </body>
