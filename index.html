@@ -68,16 +68,6 @@
       overflow: hidden;
     }
 
-    /* Fondos dinámicos */
-    .fondo-nublado   { background-image: url('https://zungher.github.io/PANTALLAS-/images/nublado-bg.jpg'); }
-    .fondo-despejado { background-image: url('https://zungher.github.io/PANTALLAS-/images/despejado-bg.jpg'); }
-    .fondo-lluvia    { background-image: url('https://zungher.github.io/PANTALLAS-/images/lluvia-bg.jpg'); }
-    .fondo-chubasco  { background-image: url('https://zungher.github.io/PANTALLAS-/images/chubasco-bg.jpg'); }
-    .fondo-niebla    { background-image: url('https://zungher.github.io/PANTALLAS-/images/niebla-bg.jpg'); }
-    .fondo-noche     { background-image: url('https://zungher.github.io/PANTALLAS-/images/noche-bg.jpg'); }
-    .fondo-madrugada { background-image: url('https://zungher.github.io/PANTALLAS-/images/madrugada-bg.jpg'); }
-    .fondo-default   { background-image: none; }
-
     .overlay {
       position: absolute;
       top: 0;
@@ -187,7 +177,7 @@
 
   <!-- CLIMA -->
   <div class="section clima">
-    <div class="weather-container fondo-default" id="weather-container">
+    <div class="weather-container" id="weather-container">
       <div class="overlay"></div>
 
       <div class="weather-main">
@@ -218,31 +208,26 @@
     function aplicarFondo(estado, hora) {
       const contenedor = document.getElementById("weather-container");
 
-      // Quitar todas las clases anteriores
-      contenedor.classList.remove(
-        "fondo-default", "fondo-nublado", "fondo-despejado",
-        "fondo-lluvia", "fondo-chubasco", "fondo-niebla",
-        "fondo-noche", "fondo-madrugada"
-      );
+      let fondo = "test.jpg"; // respaldo
 
-      // Elegir nuevo fondo según estado y hora
       if (hora >= 0 && hora < 6) {
-        contenedor.classList.add("fondo-madrugada");
+        fondo = "madrugada-bg.jpg";
       } else if (hora >= 18) {
-        contenedor.classList.add("fondo-noche");
+        fondo = "noche-bg.jpg";
       } else if (estado.includes("despejado")) {
-        contenedor.classList.add("fondo-despejado");
+        fondo = "despejado-bg.jpg";
       } else if (estado.includes("nublado")) {
-        contenedor.classList.add("fondo-nublado");
+        fondo = "nublado-bg.jpg";
       } else if (estado.includes("lluvia")) {
-        contenedor.classList.add("fondo-lluvia");
+        fondo = "lluvia-bg.jpg";
       } else if (estado.includes("chubasco")) {
-        contenedor.classList.add("fondo-chubasco");
+        fondo = "chubasco-bg.jpg";
       } else if (estado.includes("niebla")) {
-        contenedor.classList.add("fondo-niebla");
-      } else {
-        contenedor.classList.add("fondo-default");
+        fondo = "niebla-bg.jpg";
       }
+
+      const url = `https://zungher.github.io/PANTALLAS-/images/${fondo}`;
+      contenedor.style.backgroundImage = `url('${url}')`;
     }
 
     async function cargarClima() {
