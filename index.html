@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta http-equiv="refresh" content="300" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Informativo</title>
-
   <style>
     body {
       margin: 0;
@@ -40,8 +39,8 @@
 
     .clima {
       flex: 1.2;
-      overflow: hidden;
       position: relative;
+      overflow: hidden;
     }
 
     iframe {
@@ -54,7 +53,6 @@
       position: relative;
       width: 100%;
       height: 100%;
-      max-height: 100%;
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -64,9 +62,17 @@
       box-sizing: border-box;
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      overflow: hidden;
     }
+
+    /* FONDOS */
+    .fondo-madrugada { background-image: url('https://zungher.github.io/PANTALLAS-/images/madrugada-bg.jpg'); }
+    .fondo-noche { background-image: url('https://zungher.github.io/PANTALLAS-/images/noche-bg.jpg'); }
+    .fondo-despejado { background-image: url('https://zungher.github.io/PANTALLAS-/images/despejado-bg.jpg'); }
+    .fondo-nublado { background-image: url('https://zungher.github.io/PANTALLAS-/images/nublado-bg.jpg'); }
+    .fondo-lluvia { background-image: url('https://zungher.github.io/PANTALLAS-/images/lluvia-bg.jpg'); }
+    .fondo-chubasco { background-image: url('https://zungher.github.io/PANTALLAS-/images/chubasco-bg.jpg'); }
+    .fondo-niebla { background-image: url('https://zungher.github.io/PANTALLAS-/images/niebla-bg.jpg'); }
+    .fondo-test { background-image: url('https://zungher.github.io/PANTALLAS-/images/test.jpg'); }
 
     .overlay {
       position: absolute;
@@ -74,9 +80,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.3);
       z-index: 1;
-      pointer-events: none;
     }
 
     .weather-main, .forecast {
@@ -90,7 +95,6 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
     }
 
     .city {
@@ -108,7 +112,6 @@
     .condition {
       font-size: 2.5vw;
       display: flex;
-      justify-content: center;
       align-items: center;
       gap: 10px;
       margin-bottom: 10px;
@@ -132,29 +135,25 @@
 
     .details div img {
       width: 40px;
-      height: auto;
     }
 
     #weather-icon img {
-      width: 140px;
-      height: 140px;
+      width: 120px;
+      height: 120px;
     }
 
     .forecast {
-      background-color: rgba(0,0,0,0.3);
-      backdrop-filter: blur(5px);
-      padding: 10px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
       margin-top: 10px;
-      z-index: 2;
+      padding: 10px;
+      background-color: rgba(0,0,0,0.4);
+      border-radius: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
     }
 
     .forecast-hour {
       text-align: center;
-      flex: 1;
       min-width: 80px;
       font-size: 1.5vw;
       color: #fff;
@@ -162,13 +161,12 @@
     }
 
     .forecast-hour img {
-      width: 64px;
-      height: 64px;
-      margin: 8px 0;
+      width: 60px;
+      height: 60px;
+      margin: 5px 0;
     }
   </style>
 </head>
-
 <body>
   <!-- VUELOS -->
   <div class="section vuelos">
@@ -177,7 +175,7 @@
 
   <!-- CLIMA -->
   <div class="section clima">
-    <div class="weather-container" id="weather-container">
+    <div class="weather-container fondo-test" id="weather-container">
       <div class="overlay"></div>
 
       <div class="weather-main">
@@ -207,27 +205,17 @@
   <script>
     function aplicarFondo(estado, hora) {
       const contenedor = document.getElementById("weather-container");
+      let clase = "fondo-test";
 
-      let fondo = "test.jpg"; // respaldo
+      if (hora >= 0 && hora < 6) clase = "fondo-madrugada";
+      else if (hora >= 18) clase = "fondo-noche";
+      else if (estado.includes("despejado")) clase = "fondo-despejado";
+      else if (estado.includes("nublado")) clase = "fondo-nublado";
+      else if (estado.includes("lluvia")) clase = "fondo-lluvia";
+      else if (estado.includes("chubasco")) clase = "fondo-chubasco";
+      else if (estado.includes("niebla")) clase = "fondo-niebla";
 
-      if (hora >= 0 && hora < 6) {
-        fondo = "madrugada-bg.jpg";
-      } else if (hora >= 18) {
-        fondo = "noche-bg.jpg";
-      } else if (estado.includes("despejado")) {
-        fondo = "despejado-bg.jpg";
-      } else if (estado.includes("nublado")) {
-        fondo = "nublado-bg.jpg";
-      } else if (estado.includes("lluvia")) {
-        fondo = "lluvia-bg.jpg";
-      } else if (estado.includes("chubasco")) {
-        fondo = "chubasco-bg.jpg";
-      } else if (estado.includes("niebla")) {
-        fondo = "niebla-bg.jpg";
-      }
-
-      const url = `https://zungher.github.io/PANTALLAS-/images/${fondo}`;
-      contenedor.style.backgroundImage = `url('${url}')`;
+      contenedor.className = `weather-container ${clase}`;
     }
 
     async function cargarClima() {
@@ -257,7 +245,6 @@
         else if (hora >= 18) icono = "night.gif";
 
         document.getElementById("weather-icon").innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/${icono}">`;
-
       } catch (error) {
         console.error("Error al cargar el clima", error);
       }
