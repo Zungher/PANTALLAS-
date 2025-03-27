@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="300">
+  <meta http-equiv="refresh" content="300" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Informativo</title>
 
@@ -14,11 +14,13 @@
       flex-direction: column;
       height: 100vh;
       background-color: #000;
+      visibility: hidden;
       opacity: 0;
       transition: opacity 1.5s ease;
     }
 
     body.visible {
+      visibility: visible;
       opacity: 1;
     }
 
@@ -75,7 +77,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.4); /* ← Opacidad ajustable */
+      background: rgba(0, 0, 0, 0.4);
       z-index: 1;
       pointer-events: none;
     }
@@ -178,11 +180,9 @@
   <!-- CLIMA -->
   <div class="section clima">
     <div class="weather-container" id="weather-container">
-      <!-- Fondo -->
       <img id="bg-fondo" src="https://zungher.github.io/PANTALLAS-/images/nublado-bg.jpg" alt="" aria-hidden="true">
       <div class="overlay"></div>
 
-      <!-- Contenido -->
       <div class="weather-main">
         <div class="city" id="city">Guatemala</div>
         <div class="temp" id="current-temp">--°C</div>
@@ -191,15 +191,9 @@
           <div id="description">Cargando...</div>
         </div>
         <div class="details">
-          <div id="wind">
-            <img src="https://zungher.github.io/PANTALLAS-/images/wind.gif"> -- km/h
-          </div>
-          <div id="humidity">
-            <img src="https://zungher.github.io/PANTALLAS-/images/humidity.gif"> --%
-          </div>
-          <div id="pressure">
-            <img src="https://zungher.github.io/PANTALLAS-/images/pressure.gif"> -- hPa
-          </div>
+          <div id="wind"><img src="https://zungher.github.io/PANTALLAS-/images/wind.gif"> -- km/h</div>
+          <div id="humidity"><img src="https://zungher.github.io/PANTALLAS-/images/humidity.gif"> --%</div>
+          <div id="pressure"><img src="https://zungher.github.io/PANTALLAS-/images/pressure.gif"> -- hPa</div>
         </div>
       </div>
 
