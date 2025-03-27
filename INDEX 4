@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="300" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Informativo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #000;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    body.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .section {
+      border: 4px solid #000;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+    }
+
+    .vuelos {
+      flex: 2.5;
+    }
+
+    .clima {
+      flex: 1.2;
+      position: relative;
+      overflow: hidden;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .weather-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* FONDOS */
+    .fondo-madrugada { background-image: url('https://zungher.github.io/PANTALLAS-/images/madrugada-bg.jpg'); }
+    .fondo-noche { background-image: url('https://zungher.github.io/PANTALLAS-/images/noche-bg.jpg'); }
+    .fondo-despejado { background-image: url('https://zungher.github.io/PANTALLAS-/images/despejado-bg.jpg'); }
+    .fondo-nublado { background-image: url('https://zungher.github.io/PANTALLAS-/images/nublado-bg.jpg'); }
+    .fondo-lluvia { background-image: url('https://zungher.github.io/PANTALLAS-/images/lluvia-bg.jpg'); }
+    .fondo-chubasco { background-image: url('https://zungher.github.io/PANTALLAS-/images/chubasco-bg.jpg'); }
+    .fondo-niebla { background-image: url('https://zungher.github.io/PANTALLAS-/images/niebla-bg.jpg'); }
+    .fondo-test { background-image: url('https://zungher.github.io/PANTALLAS-/images/test.jpg'); }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 1;
+    }
+
+    .weather-main, .forecast {
+      position: relative;
+      z-index: 2;
+    }
+
+    .weather-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .city {
+      font-size: 4vw;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .temp {
+      font-size: 7vw;
+      margin: 5px 0;
+      font-weight: 300;
+    }
+
+    .condition {
+      font-size: 2.5vw;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .details {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4vw;
+      margin-top: 10px;
+      font-size: 2vw;
+      flex-wrap: wrap;
+    }
+
+    .details div {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .details div img {
+      width: 40px;
+    }
+
+    #weather-icon img {
+      width: 120px;
+      height: 120px;
+    }
+
+    .forecast {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: rgba(0,0,0,0.4);
+      border-radius: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    .forecast-hour {
+      text-align: center;
+      min-width: 80px;
+      font-size: 1.5vw;
+      color: #fff;
+      margin: 5px;
+    }
+
+    .forecast-hour img {
+      width: 60px;
+      height: 60px;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- VUELOS -->
+  <div class="section vuelos">
+    <iframe src="https://zungher.github.io/API---VUELOS-/public/index.html"></iframe>
+  </div>
+
+  <!-- CLIMA -->
+  <div class="section clima">
+    <div class="weather-container fondo-test" id="weather-container">
+      <div class="overlay"></div>
+
+      <div class="weather-main">
+        <div class="city" id="city">Guatemala</div>
+        <div class="temp" id="current-temp">--°C</div>
+        <div class="condition">
+          <div id="weather-icon"></div>
+          <div id="description">Cargando...</div>
+        </div>
+        <div class="details">
+          <div id="wind"><img src="https://zungher.github.io/PANTALLAS-/images/wind.gif"> -- km/h</div>
+          <div id="humidity"><img src="https://zungher.github.io/PANTALLAS-/images/humidity.gif"> --%</div>
+          <div id="pressure"><img src="https://zungher.github.io/PANTALLAS-/images/pressure.gif"> -- hPa</div>
+        </div>
+      </div>
+
+      <div class="forecast" id="forecast-container">
+        <div class="forecast-hour"><div>08:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png"><div>6°C</div></div>
+        <div class="forecast-hour"><div>09:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png"><div>5°C</div></div>
+        <div class="forecast-hour"><div>10:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png"><div>5°C</div></div>
+        <div class="forecast-hour"><div>11:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png"><div>6°C</div></div>
+        <div class="forecast-hour"><div>12:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png"><div>7°C</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function aplicarFondo(estado, hora) {
+      const contenedor = document.getElementById("weather-container");
+      let clase = "fondo-test";
+
+      if (hora >= 0 && hora < 6) clase = "fondo-madrugada";
+      else if (hora >= 18) clase = "fondo-noche";
+      else if (estado.includes("despejado")) clase = "fondo-despejado";
+      else if (estado.includes("nublado")) clase = "fondo-nublado";
+      else if (estado.includes("lluvia")) clase = "fondo-lluvia";
+      else if (estado.includes("chubasco")) clase = "fondo-chubasco";
+      else if (estado.includes("niebla")) clase = "fondo-niebla";
+
+      contenedor.className = `weather-container ${clase}`;
+    }
+
+    async function cargarClima() {
+      try {
+        const res = await fetch('https://clima-git-main-zunghers-projects.vercel.app/');
+        const data = await res.json();
+
+        document.getElementById('city').innerText = "Guatemala";
+        document.getElementById('current-temp').innerText = data.temperatura || '--°C';
+        document.getElementById('description').innerText = data.estado || 'Sin datos';
+
+        document.getElementById('wind').innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/wind.gif"> ${data.viento || '-- km/h'}`;
+        document.getElementById('humidity').innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/humidity.gif"> ${data.humedad || '--%'}`;
+        document.getElementById('pressure').innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/pressure.gif"> ${data.presion || '-- hPa'}`;
+
+        const estado = (data.estado || '').toLowerCase();
+        const hora = new Date().getHours();
+        aplicarFondo(estado, hora);
+
+        let icono = "default.gif";
+        if (estado.includes("despejado")) icono = "sunny.gif";
+        else if (estado.includes("nublado")) icono = "cloudy.gif";
+        else if (estado.includes("lluvia")) icono = "rainy.gif";
+        else if (estado.includes("chubasco")) icono = "shower.gif";
+        else if (estado.includes("niebla")) icono = "foggy.gif";
+        if (hora >= 0 && hora < 6) icono = "madrugada.gif";
+        else if (hora >= 18) icono = "night.gif";
+
+        document.getElementById("weather-icon").innerHTML = `<img src="https://zungher.github.io/PANTALLAS-/images/${icono}">`;
+      } catch (error) {
+        console.error("Error al cargar el clima", error);
+      }
+    }
+
+    cargarClima();
+
+    window.addEventListener("load", () => {
+      document.body.classList.add("visible");
+    });
+
+    setTimeout(() => {
+      document.body.classList.remove("visible");
+    }, 295000);
+  </script>
+</body>
+</html>
