@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="refresh" content="300">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Informativo</title>
+  <title>Panel Informativo Mejorado</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
   <style>
     body {
@@ -17,7 +20,7 @@
     }
 
     .section {
-      border: 4px solid #000;
+      border: 2px solid #000;
       box-sizing: border-box;
       overflow: hidden;
       display: flex;
@@ -30,8 +33,13 @@
       flex: 1;
     }
 
-    .clima {
+    .mapa {
       flex: 1;
+      position: relative;
+    }
+
+    .clima {
+      flex: 1.2;
     }
 
     iframe {
@@ -40,11 +48,17 @@
       border: none;
     }
 
-    /* Todo el estilo del clima se mantiene igual */
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
     .weather-container {
       position: relative;
       width: 100%;
       height: 100%;
+      max-width: 100%;
+      max-height: 100%;
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -103,11 +117,12 @@
       margin-bottom: 10px;
     }
 
+    /* Ajustes en detalles */
     .details {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 3vw;
+      gap: 3vw; /* Separación entre viento, humedad y presión */
       margin-top: 20px;
       font-size: 1.5vw;
       flex-wrap: wrap;
@@ -115,8 +130,8 @@
 
     .details div {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      align-items: center; /* Alinea ícono y texto verticalmente */
+      gap: 10px; /* Espacio entre el ícono y el texto */
     }
 
     .details div img {
@@ -158,12 +173,17 @@
 </head>
 <body>
 
-  <!-- Sección Vuelos -->
+  <!-- Sección 1: Vuelos -->
   <div class="section vuelos">
     <iframe src="https://zungher.github.io/API---VUELOS-/public/index.html"></iframe>
   </div>
 
-  <!-- Sección Clima -->
+  <!-- Sección 2: Mapa (Leaflet integrado) -->
+  <div class="section mapa">
+    <div id="map"></div>
+  </div>
+
+  <!-- Sección 3: Clima dinámico mejorado -->
   <div class="section clima">
     <div class="weather-container" id="weather-container">
       <div class="weather-main">
@@ -173,6 +193,8 @@
           <div id="weather-icon"></div>
           <div id="description">Cargando...</div>
         </div>
+
+        <!-- Detalles: viento, humedad y presión -->
         <div class="details">
           <div id="wind">
             <img src="images/wind.gif" alt="Viento"> -- km/h
@@ -185,18 +207,66 @@
           </div>
         </div>
       </div>
+
+      <!-- Pronóstico -->
       <div class="forecast" id="forecast-container">
-        <!-- Pronóstico fijo de ejemplo -->
-        <div class="forecast-hour"><div>08:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png"><div>6°C</div></div>
-        <div class="forecast-hour"><div>09:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png"><div>5°C</div></div>
-        <div class="forecast-hour"><div>10:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png"><div>5°C</div></div>
-        <div class="forecast-hour"><div>11:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png"><div>6°C</div></div>
-        <div class="forecast-hour"><div>12:00</div><img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png"><div>7°C</div></div>
+        <div class="forecast-hour">
+          <div>08:00</div>
+          <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="cloudy">
+          <div>6°C</div>
+        </div>
+        <div class="forecast-hour">
+          <div>09:00</div>
+          <img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png" alt="rain">
+          <div>5°C</div>
+        </div>
+        <div class="forecast-hour">
+          <div>10:00</div>
+          <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="cloudy">
+          <div>5°C</div>
+        </div>
+        <div class="forecast-hour">
+          <div>11:00</div>
+          <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="cloudy">
+          <div>6°C</div>
+        </div>
+        <div class="forecast-hour">
+          <div>12:00</div>
+          <img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png" alt="rain">
+          <div>7°C</div>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
   <script>
+    // ===================== Mapa Dinámico =======================
+    const hotelLatLng = [14.6094, -90.5186];
+    const aeropuertoLatLng = [14.5833, -90.5270];
+
+    const map = L.map('map').setView([14.596, -90.523], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    L.marker(hotelLatLng).addTo(map)
+      .bindPopup('<b>Hotel Barceló Guatemala City</b>').openPopup();
+
+    L.marker(aeropuertoLatLng).addTo(map)
+      .bindPopup('<b>Aeropuerto La Aurora</b>');
+
+    const ruta = L.polyline([hotelLatLng, aeropuertoLatLng], {
+      color: 'red',
+      weight: 5
+    }).addTo(map);
+
+    map.fitBounds(ruta.getBounds());
+
+    // ===================== Clima Dinámico =======================
     async function cargarClima() {
       try {
         const res = await fetch('https://clima-git-main-zunghers-projects.vercel.app/');
@@ -206,9 +276,15 @@
         document.getElementById('current-temp').innerText = data.temperatura || '--°C';
         document.getElementById('description').innerText = data.estado || 'Sin datos';
 
-        document.getElementById('wind').innerHTML = `<img src="images/wind.gif" alt="Viento"> ${data.viento || '-- km/h'}`;
-        document.getElementById('humidity').innerHTML = `<img src="images/humidity.gif" alt="Humedad"> ${data.humedad || '--%'}`;
-        document.getElementById('pressure').innerHTML = `<img src="images/pressure.gif" alt="Presión"> ${data.presion || '-- hPa'}`;
+        // Íconos con las nuevas imágenes .gif
+        document.getElementById('wind').innerHTML = `
+          <img src="images/wind.gif" alt="Viento"> ${data.viento || '-- km/h'}`;
+
+        document.getElementById('humidity').innerHTML = `
+          <img src="images/humidity.gif" alt="Humedad"> ${data.humedad || '--%'}`;
+
+        document.getElementById('pressure').innerHTML = `
+          <img src="images/pressure.gif" alt="Presión"> ${data.presion || '-- hPa'}`;
 
         const estado = (data.estado || '').toLowerCase();
         const hour = new Date().getHours();
@@ -243,8 +319,14 @@
           iconoSrc = 'images/night.gif';
         }
 
-        document.getElementById('weather-icon').innerHTML = `<img src="${iconoSrc}" alt="icono clima">`;
-        document.getElementById('weather-container').style.backgroundImage = bgImage;
+        document.getElementById('weather-icon').innerHTML = `
+          <img src="${iconoSrc}" alt="icono clima">
+        `;
+
+        const weatherContainer = document.getElementById('weather-container');
+        weatherContainer.style.backgroundImage = bgImage;
+        weatherContainer.style.backgroundSize = "cover";
+        weatherContainer.style.backgroundPosition = "center";
 
       } catch (error) {
         console.error('Error al cargar el clima', error);
